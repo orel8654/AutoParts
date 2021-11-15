@@ -255,93 +255,91 @@ class SortedParts:
 
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted HOOD
-    def start_sorted_hood(data, mark):
-        class_hood = SortedParts()
-        epc_average_price_hood, emex_price_hood = class_hood.read_file_for_hood(data, mark)
-        try:
-            print(f'Средняя цена капота по AMAYAMA: {epc_average_price_hood} RUB\nМаксимальная цена капота по EMEX: {max(emex_price_hood)} RUB')
-        except:
-            print('Произошла ошибка, цены по капотам не найдены!')
+def start_sorted_hood(data, mark):
+    class_hood = SortedParts()
+    epc_average_price_hood, emex_price_hood = class_hood.read_file_for_hood(data, mark)
+    try:
+        print(f'Средняя цена капота по AMAYAMA: {epc_average_price_hood} RUB\nМаксимальная цена капота по EMEX: {max(emex_price_hood)} RUB')
+    except:
+        print('Произошла ошибка, цены по капотам не найдены!')
 
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted NUMBERS PARTS
-    def start_sorted_numbers(data, mark, numbers=['19000-31330']):
-        average_summa = 0
-        emex_parts = []
-        class_numbers = SortedParts()
-        average_price_numbers = class_numbers.read_file_for_number(data, numbers)
-        if average_price_numbers != None:
-            for i in average_price_numbers:
-                emex_parts.extend(emex_parser.main(i['number'], mark))
-                average_summa += i['price']
-                print(f'Ссылка на деталь: {i["link"]}\nНазвание: {i["name"]}\nНомер запчасти: {i["number"]}\nЦена: {i["price"]} рублей.\n')
-            print(f'Общая сумма: {average_summa} RUB!')
-            print(f'Максимальная цена на деталь по EMEX: {max(emex_parts)} RUB')
-        else:
-            print('Информации о деталях не найдено!')
+def start_sorted_numbers(data, mark, numbers=['19000-31330']):
+    average_summa = 0
+    emex_parts = []
+    class_numbers = SortedParts()
+    average_price_numbers = class_numbers.read_file_for_number(data, numbers)
+    if average_price_numbers != None:
+        for i in average_price_numbers:
+            emex_parts.extend(emex_parser.main(i['number'], mark))
+            average_summa += i['price']
+            print(f'Ссылка на деталь: {i["link"]}\nНазвание: {i["name"]}\nНомер запчасти: {i["number"]}\nЦена: {i["price"]} рублей.\n')
+        print(f'Общая сумма: {average_summa} RUB!')
+        print(f'Максимальная цена на деталь по EMEX: {max(emex_parts)} RUB')
+    else:
+        print('Информации о деталях не найдено!')
 
 
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted FRONT FENDER
-    def start_sorted_front_fender(data, mark):
-        class_front_fender = SortedParts()
-        average_price_underfender, average_price_fender, max_price_fender_emex, max_price_underfender_emex = class_front_fender.read_file_for_front_fender(data, mark)
-        try:
-            print(f'Средняя цена крыла: {average_price_fender} RUB\nСредняя цена подкрылка: {average_price_underfender} RUB\nМаксимальная цена крыла по EMEX {max(max_price_fender_emex)} RUB\nМаксимальная цена подкрылка по EMEX {max(max_price_underfender_emex)} RUB')
-        except ValueError:
-            print(f'Произошла ошибка, цены по крыльям не найдены!')
+def start_sorted_front_fender(data, mark):
+    class_front_fender = SortedParts()
+    average_price_underfender, average_price_fender, max_price_fender_emex, max_price_underfender_emex = class_front_fender.read_file_for_front_fender(data, mark)
+    try:
+        print(f'Средняя цена крыла: {average_price_fender} RUB\nСредняя цена подкрылка: {average_price_underfender} RUB\nМаксимальная цена крыла по EMEX {max(max_price_fender_emex)} RUB\nМаксимальная цена подкрылка по EMEX {max(max_price_underfender_emex)} RUB')
+    except ValueError:
+        print(f'Произошла ошибка, цены по крыльям не найдены!')
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted REAR FENDER
-    def start_sorted_rear_fender(data):
-        pass
+def start_sorted_rear_fender(data):
+    pass
 
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted HEADLIGHTS
-    def start_sorted_headlights(data, mark):
-        class_headlights = SortedParts()
-        average_price_headlights, emex_max_price_headlights = class_headlights.read_file_for_electric(data, mark)
-        try:
-            print(f'Средняя цена фары по AMAYAMA: {average_price_headlights} RUB\nМаксимальная цена фары по EMEX: {max(emex_max_price_headlights)}')
-        except ValueError:
-            print('Произошла ошибка, цены по фарам не найдены!')
+def start_sorted_headlights(data, mark):
+    class_headlights = SortedParts()
+    average_price_headlights, emex_max_price_headlights = class_headlights.read_file_for_electric(data, mark)
+    try:
+        print(f'Средняя цена фары по AMAYAMA: {average_price_headlights} RUB\nМаксимальная цена фары по EMEX: {max(emex_max_price_headlights)}')
+    except ValueError:
+        print('Произошла ошибка, цены по фарам не найдены!')
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted FRONT BUMPER
-    def start_sorted_front_bumper(data, mark):
-        class_front_bumper = SortedParts()
-        average_price_front_bumper, emex_max_price_front_bumper = class_front_bumper.read_file_for_front_bumper(data, mark)
-        try:
-            print(f'Средняя цена переднего бампера AMAYAMA: {average_price_front_bumper} RUB\nМаксимальная цена переднего бампера по EMEX: {max(emex_max_price_front_bumper)} RUB')
-        except ValueError:
-            print('Произошла ошибка, цены по бамперам не найдены!')
+def start_sorted_front_bumper(data, mark):
+    class_front_bumper = SortedParts()
+    average_price_front_bumper, emex_max_price_front_bumper = class_front_bumper.read_file_for_front_bumper(data, mark)
+    try:
+        print(f'Средняя цена переднего бампера AMAYAMA: {average_price_front_bumper} RUB\nМаксимальная цена переднего бампера по EMEX: {max(emex_max_price_front_bumper)} RUB')
+    except ValueError:
+        print('Произошла ошибка, цены по бамперам не найдены!')
 
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted REAR BUMPER
-    def start_sorted_rear_bumper(data, mark):
-        class_rear_bumper = SortedParts()
-        average_price_rear_bumper, emex_max_price_rear_bumper = class_rear_bumper.read_file_for_rear_bumper(data, mark)
-        try:
-            print(f'Средняя цена заднего бампера: {average_price_rear_bumper} RUB\nМаксимальная цена переднего бампера по EMEX: {max(emex_max_price_rear_bumper)} RUB')
-        except ValueError:
-            print('Произошла ошибка, цены по бамперам не найдены!')
+def start_sorted_rear_bumper(data, mark):
+    class_rear_bumper = SortedParts()
+    average_price_rear_bumper, emex_max_price_rear_bumper = class_rear_bumper.read_file_for_rear_bumper(data, mark)
+    try:
+        print(f'Средняя цена заднего бампера: {average_price_rear_bumper} RUB\nМаксимальная цена переднего бампера по EMEX: {max(emex_max_price_rear_bumper)} RUB')
+    except ValueError:
+        print('Произошла ошибка, цены по бамперам не найдены!')
 
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted REAR HOOD (BACK DOOR)
-    def start_sorted_rear_hood(data, mark):
-        class_rear_hood = SortedParts()
-        average_price_rear_hood, emex_max_price_rear_hood = class_rear_hood.read_file_for_rear_hood(data, mark)
-        try:
-            print(f'Средняя цена крышки багажника: {average_price_rear_hood} RUB\nМаксимальная цена крышки багажника по EMEX: {max(emex_max_price_rear_hood)}')
-        except ValueError:
-            print(f'Произошла ошибка, цены по багажникам не найдены!')
+def start_sorted_rear_hood(data, mark):
+    class_rear_hood = SortedParts()
+    average_price_rear_hood, emex_max_price_rear_hood = class_rear_hood.read_file_for_rear_hood(data, mark)
+    try:
+        print(f'Средняя цена крышки багажника: {average_price_rear_hood} RUB\nМаксимальная цена крышки багажника по EMEX: {max(emex_max_price_rear_hood)}')
+    except ValueError:
+        print(f'Произошла ошибка, цены по багажникам не найдены!')
 
 #-----------------------------------------------------------------------------------------------------------------------Def input and sorted with class part
-    def start_main():
-        car_mark = 'toyota'
-        car_model = '4runner'
-        file_year = '4-suv-left-n210-2002-3211.json'
-        with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
-            data_file = json.load(file)
-        # start_sorted_hood(data_file, car_mark)
-        # start_sorted_numbers(data_file, car_mark)
-        # start_sorted_front_fender(data_file, car_mark)
-        # start_sorted_headlights(data_file, car_mark)
-        # start_sorted_front_bumper(data_file, car_mark) #Требует доработки
-        # start_sorted_rear_bumper(data_file, car_mark) #Требует доработки по сути одинаковы
-        # start_sorted_rear_hood(data_file, car_mark)
-
-    start_main()
+def start_main(mark_m, model_m, year_m):
+    car_mark = mark_m
+    car_model = model_m
+    file_year = year_m
+    with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
+        data_file = json.load(file)
+    start_sorted_hood(data_file, car_mark)
+    # start_sorted_numbers(data_file, car_mark)
+    start_sorted_front_fender(data_file, car_mark)
+    start_sorted_headlights(data_file, car_mark)
+    start_sorted_front_bumper(data_file, car_mark) #Требует доработки
+    start_sorted_rear_bumper(data_file, car_mark) #Требует доработки по сути одинаковы
+    start_sorted_rear_hood(data_file, car_mark)

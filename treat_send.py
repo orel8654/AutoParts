@@ -16,7 +16,7 @@ def test(data, num): #----------------------------------------------------------
                 except:
                     return None
 
-def valid_folder(car_mark, car_model): #-------------------------------------------worked test have or not file in folder
+def valid_folder(car_mark, car_model): #-------------------------------------------HAVE OR NOT FILE IN DIRECTORY
     path = Path(f'models/{car_mark}/{car_model}')
     subdirs = []
     files = []
@@ -27,7 +27,7 @@ def valid_folder(car_mark, car_model): #----------------------------------------
             files.append(i)
     return files
 
-def recompile_file(folder, year): #------------------------------------worked test
+def recompile_file(folder, year): #------------------------------------RETURN ONE FILE
     file = 'no'
     for i in folder:
         spec = str(i)
@@ -54,7 +54,6 @@ def recompile_file(folder, year): #------------------------------------worked te
         check = str(folder[-1]).split('/')[-1]
         return check
 
-
 if __name__ == '__main__':
 #---------------------------------------------------------------------------------------------INPUT DATA
     # car_mark = input('Введите марку машины: ').lower()
@@ -68,9 +67,12 @@ if __name__ == '__main__':
     files = valid_folder(car_mark, car_model) #Get PATH FOLDER
     one_file = recompile_file(files, car_spec) #Get FILE NAME
 
+#---------------------------------------------------------------------------------------------CALL IN SORTED_WITH_CLASS
+    sorting_with_class.start_main(car_mark, car_model, one_file)
+
 #---------------------------------------------------------------------------------------------OPEN FILE and GET DATA (CALL IN SORTED CLASS)
-    with open(f'models/{car_mark}/{car_model}/{one_file}', 'r') as file:
-        data = json.load(file)
+    # with open(f'models/{car_mark}/{car_model}/{one_file}', 'r') as file:
+    #     data = json.load(file)
 
 #---------------------------------------------------------------------------------------------ADD PARTS NUMBERS
     # num = []
