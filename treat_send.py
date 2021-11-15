@@ -4,18 +4,6 @@ import re
 from pathlib import Path
 import sorting_with_class
 
-def test(data, num): #-------------------------------------------------------------------------worked test(eject data) on number
-    for i in data:
-        all_parts = i['all_parts']
-        for j in all_parts:
-            title = j['title']['attr']
-            for k in title:
-                try:
-                    if k['number'] == num:
-                        return k['price'], k['name'], k['link'], k['number']
-                except:
-                    return None
-
 def valid_folder(car_mark, car_model): #-------------------------------------------HAVE OR NOT FILE IN DIRECTORY
     path = Path(f'models/{car_mark}/{car_model}')
     subdirs = []
@@ -69,53 +57,6 @@ if __name__ == '__main__':
 
 #---------------------------------------------------------------------------------------------CALL IN SORTED_WITH_CLASS
     sorting_with_class.start_main(car_mark, car_model, one_file)
-
-#---------------------------------------------------------------------------------------------OPEN FILE and GET DATA (CALL IN SORTED CLASS)
-    # with open(f'models/{car_mark}/{car_model}/{one_file}', 'r') as file:
-    #     data = json.load(file)
-
-#---------------------------------------------------------------------------------------------ADD PARTS NUMBERS
-    # num = []
-    # while True:
-    #     try:
-    #         part_number = input('Введите номер детали, по одному за раз, если больше не хотите добавлять введите цифру - 1: ')
-    #         if part_number != '1':
-    #             num.append(part_number)
-    #         else:
-    #             break
-    #     except Exception as ex:
-    #         break
-
-#---------------------------------------------------------------------------------------------SENDING INFO IN TELEGRAM
-    # sum = 0
-    # all_sum = []
-    # all_name = []
-    # all_links = []
-    # all_numbers = []
-    # for i in num:
-    #     price_cost, name, link, number = test(data, i)
-    #     try:
-    #         sum += int(price_cost)
-    #         all_sum.append(int(price_cost))
-    #         all_links.append(link)
-    #         all_name.append(name)
-    #         all_numbers.append(number)
-    #     except Exception as ex:
-    #         if price_cost == None or price_cost == 'null' or price_cost == 'Нет в наличии':
-    #             sum += 0
-    #             all_sum.append('Нет в наличии')
-    #             all_name.append(name)
-    #             all_links.append(link)
-    #             all_numbers.append(number)
-    #         else:
-    #             sum += int(price_cost.replace('\xa0', ''))
-    #             all_sum.append(int(price_cost.replace('\xa0', '')))
-    #             all_name.append(name)
-    #             all_links.append(link)
-    #             all_numbers.append(number)
-    #
-    # print(f'Сумма запчастей = {sum}')
-    # print(f'Наименования деталей {all_name}\nСтоимость {all_sum}\nСсылки {all_links}\nНомера деталей {all_numbers}')
 
 #---------------------------------------------------------------------------------------------NOTES
 '''
