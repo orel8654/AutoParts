@@ -9,8 +9,9 @@ from telegram_send import send_message
 
 #---------------------------------------------------------------------------------------------BASE HTML(don't delete!!!)
 def get_html(url):
-    response = requests.get(url, headers=HEADERS)
-    return response
+    s = requests.Session()
+    r = s.get(url, headers=HEADERS)
+    return r
 
 #---------------------------------------------------------------------------------------------WORKED SET
 def get_attr(link):
