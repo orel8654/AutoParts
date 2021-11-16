@@ -1,10 +1,14 @@
+'''
+Прием сообщения и обработка
+'''
 import json
 import time
 import re
 from pathlib import Path
 import sorting_with_class
 
-def valid_folder(car_mark, car_model): #-------------------------------------------HAVE OR NOT FILE IN DIRECTORY
+#-----------------------------------------------------------------------------------------------------------------------HAVE OR NOT FILE IN DIRECTORY
+def valid_folder(car_mark, car_model):
     path = Path(f'models/{car_mark}/{car_model}')
     subdirs = []
     files = []
@@ -15,7 +19,8 @@ def valid_folder(car_mark, car_model): #----------------------------------------
             files.append(i)
     return files
 
-def recompile_file(folder, year): #------------------------------------RETURN ONE FILE
+#-----------------------------------------------------------------------------------------------------------------------RETURN ONE FILE
+def recompile_file(folder, year):
     file = 'no'
     for i in folder:
         spec = str(i)
@@ -42,16 +47,16 @@ def recompile_file(folder, year): #------------------------------------RETURN ON
         check = str(folder[-1]).split('/')[-1]
         return check
 
-#---------------------------------------------------------------------------------------------SORTED DATA IN FILE (don't delete!)
+#-----------------------------------------------------------------------------------------------------------------------SORTED DATA IN FILE (don't delete!)
 def sorted_data_in_file(car_mark, car_model, car_spec):
     files = valid_folder(car_mark, car_model)  # Get PATH FOLDER
     one_file = recompile_file(files, car_spec)  # Get FILE NAME
     return one_file
-#---------------------------------------------------------------------------------------------CALL IN SORTED_WITH_CLASS
+#-----------------------------------------------------------------------------------------------------------------------CALL IN SORTED_WITH_CLASS
 def call_in_sorted_with_class(car_mark, car_model, one_file, check_sort_category):
     sorting_with_class.start_main(car_mark, car_model, one_file, check_sort_category)
 
-#---------------------------------------------------------------------------------------------INPUT DATA
+#-----------------------------------------------------------------------------------------------------------------------INPUT DATA
 def input_main(car_mark, car_model, car_spec, class_sorted_category='all'):
     if class_sorted_category == list(class_sorted_category) and len(class_sorted_category) > 0:
         car_mark = car_mark.lower()
@@ -80,7 +85,7 @@ if __name__ == '__main__':
     lst = ['фара']
     input_main(car_mark='toyota', car_model='allex', car_spec='2001', class_sorted_category=lst)
 
-#---------------------------------------------------------------------------------------------NOTES
+#-----------------------------------------------------------------------------------------------------------------------NOTES
 '''
 Из телеграма передается марка машины, модель машины, год начала производства, список запчастей, если списка запчастей не передано, то считается все запчасти в машине
 '''
