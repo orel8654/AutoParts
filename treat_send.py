@@ -42,23 +42,45 @@ def recompile_file(folder, year): #------------------------------------RETURN ON
         check = str(folder[-1]).split('/')[-1]
         return check
 
-if __name__ == '__main__':
-#---------------------------------------------------------------------------------------------INPUT DATA
-    # car_mark = input('Введите марку машины: ').lower()
-    # car_model = input('Введите название машины: ').replace(' ', '-').lower()
-    # car_spec = input('Введите год производства: ').lower()
-    car_mark = 'toyota'.lower()
-    car_model = 'allex'.replace(' ', '-').lower()
-    car_spec = '2004'.lower()
-
 #---------------------------------------------------------------------------------------------SORTED DATA IN FILE (don't delete!)
-    files = valid_folder(car_mark, car_model) #Get PATH FOLDER
-    one_file = recompile_file(files, car_spec) #Get FILE NAME
-
+def sorted_data_in_file(car_mark, car_model, car_spec):
+    files = valid_folder(car_mark, car_model)  # Get PATH FOLDER
+    one_file = recompile_file(files, car_spec)  # Get FILE NAME
+    return one_file
 #---------------------------------------------------------------------------------------------CALL IN SORTED_WITH_CLASS
-    sorting_with_class.start_main(car_mark, car_model, one_file)
+def call_in_sorted_with_class(car_mark, car_model, one_file, check_sort_category):
+    sorting_with_class.start_main(car_mark, car_model, one_file, check_sort_category)
+
+#---------------------------------------------------------------------------------------------INPUT DATA
+def input_main(car_mark, car_model, car_spec, class_sorted_category='all'):
+    if class_sorted_category == list(class_sorted_category) and len(class_sorted_category) > 0:
+        car_mark = car_mark.lower()
+        car_model = car_model.replace(' ', '-').lower()
+        car_spec = car_spec.lower()
+        try:
+            one_file = sorted_data_in_file(car_mark, car_model, car_spec)
+        except Exception as ex:
+            print(ex)
+            print('Неправильно введены данные, либо данные о машине отсутвуют!')
+        for i in class_sorted_category:
+            i = i.lower()
+            call_in_sorted_with_class(car_mark, car_model, one_file, i)
+    elif class_sorted_category == str(class_sorted_category) and class_sorted_category == 'all':
+        car_mark = car_mark.lower()
+        car_model = car_model.replace(' ', '-').lower()
+        car_spec = car_spec.lower()
+        try:
+            one_file = sorted_data_in_file(car_mark, car_model, car_spec)
+        except Exception as ex:
+            print(ex)
+            print('Неправильно введены данные, либо данные о машине отсутвуют!')
+        call_in_sorted_with_class(car_mark, car_model, one_file, class_sorted_category)
+
+if __name__ == '__main__':
+    lst = ['фара']
+    input_main(car_mark='toyota', car_model='allex', car_spec='2001', class_sorted_category=lst)
 
 #---------------------------------------------------------------------------------------------NOTES
 '''
-Note
+Из телеграма передается марка машины, модель машины, год начала производства, список запчастей, если списка запчастей не передано, то считается все запчасти в машине
 '''

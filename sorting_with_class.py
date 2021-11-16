@@ -271,11 +271,11 @@ class SortedParts:
                                 try:
                                     price = int(k['price'])
                                     average_price_glass_windshield.append(price)
-                                    emex_parts_windshield.extend(emex_parser.main(k['price'], car_mark))
+                                    emex_parts_windshield.extend(emex_parser.main(k['number'], car_mark))
                                 except:
                                     price = int(k['price'].replace('\xa0', ''))
                                     average_price_glass_windshield.append(price)
-                                    emex_parts_windshield.extend(emex_parser.main(k['price'], car_mark))
+                                    emex_parts_windshield.extend(emex_parser.main(k['number'], car_mark))
                             elif k['name'].lower() in self.parts_glasses_doors:
                                 try:
                                     price = int(k['price'])
@@ -336,7 +336,35 @@ class SortedParts:
         pass
 
     def read_file_for_engine(self, data, car_mark):
-        pass
+        average_parts = []
+        emex_parts = []
+        for i in data:
+            if i['title'] == SortedParts.ENGINE:
+                for j in i['all_parts']:
+                    for k in j['title']['attr']:
+                        try:
+                            if k['name'].lower() in self.parts_engine:
+                                try:
+                                    price = int(k['price'])
+                                    average_parts.append(price)
+                                    emex_parts.extend(emex_parser.main(k['number'], car_mark))
+                                except:
+                                    price = int(k['price'].replace('\xa0', ''))
+                                    average_parts.append(price)
+                                    emex_parts.extend(emex_parser.main(k['number'], car_mark))
+                        except:
+                            continue
+
+        average_parts_sum = 0
+        emex_parts_sum = 0
+        if len(average_parts) > 0:
+            for i in average_parts:
+                average_parts_sum += i
+            average_parts_sum = int(average_parts_sum / len(average_parts))
+        elif len(average_parts) == 0:
+            average_parts_sum = 'Не найдено'
+
+        return average_parts_sum, emex_parts_sum
 
     def read_file_for_doors(self, data, car_mark):
         pass
@@ -458,20 +486,78 @@ def start_sorted_glasses(data, mark):
 
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted ENGINE
 def start_sorted_engine(data, mark):
-    pass
+    class_engine = SortedParts()
+    ama_average_engine, emex_max_engine = class_engine.read_file_for_engine(data, mark)
+    try:
+        print(f'Средняя цена AMAYAMA: {ama_average_engine} RUB\nМаксимальная цена EMEX: {max(emex_max_engine)} RUB')
+    except:
+        print(f'Средняя цена AMAYAMA: {ama_average_engine} RUB\nМаксимальная цена по EMEX: Не найдено!')
+
 #-----------------------------------------------------------------------------------------------------------------------Def input and sorted with class part
-def start_main(mark_m, model_m, year_m):
-    car_mark = mark_m
-    car_model = model_m
-    file_year = year_m
-    with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
-        data_file = json.load(file)
-    # start_sorted_hood(data_file, car_mark)
-    # start_sorted_numbers(data_file, car_mark)
-    # start_sorted_front_fender(data_file, car_mark)
-    # start_sorted_headlights(data_file, car_mark)
-    # start_sorted_front_bumper(data_file, car_mark) #Требует доработки
-    # start_sorted_rear_bumper(data_file, car_mark) #Требует доработки по сути одинаковы
-    # start_sorted_rear_hood(data_file, car_mark)
-    # start_sorted_glasses(data_file, car_mark)
-    start_sorted_engine(data_file, car_mark)
+def start_main(mark_m, model_m, year_m, sort_category):
+    if sort_category == str(sort_category):
+        car_mark = mark_m
+        car_model = model_m
+        file_year = year_m
+        with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
+            data_file = json.load(file)
+        if sort_category == 'капот':
+            start_sorted_hood(data_file, car_mark)
+        elif sort_category == 'номер':
+            start_sorted_numbers(data_file, car_mark)
+        elif sort_category == 'крыло':
+            start_sorted_front_fender(data_file, car_mark)
+        elif sort_category == 'фара':
+            start_sorted_headlights(data_file, car_mark)
+        elif sort_category == 'бампер':
+            start_sorted_front_bumper(data_file, car_mark) #Требует доработки
+        # start_sorted_rear_bumper(data_file, car_mark) #Требует доработки по сути одинаковы
+        elif sort_category == 'багажник':
+            start_sorted_rear_hood(data_file, car_mark)
+        elif sort_category == 'стекла':
+            start_sorted_glasses(data_file, car_mark)
+        elif sort_category == 'двигатель':
+            start_sorted_engine(data_file, car_mark)
+    elif sort_category == list(sort_category):
+        car_mark = mark_m
+        car_model = model_m
+        file_year = year_m
+        for i in sort_category:
+            with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
+                data_file = json.load(file)
+            if i == 'капот':
+                start_sorted_hood(data_file, car_mark)
+            elif i == 'номер':
+                start_sorted_numbers(data_file, car_mark)
+            elif i == 'крыло':
+                start_sorted_front_fender(data_file, car_mark)
+            elif i == 'фара':
+                start_sorted_headlights(data_file, car_mark)
+            elif i == 'бампер':
+                start_sorted_front_bumper(data_file, car_mark)  # Требует доработки
+            # start_sorted_rear_bumper(data_file, car_mark) #Требует доработки по сути одинаковы
+            elif i == 'багажник':
+                start_sorted_rear_hood(data_file, car_mark)
+            elif i == 'стекла':
+                start_sorted_glasses(data_file, car_mark)
+            elif i == 'двигатель':
+                start_sorted_engine(data_file, car_mark)
+    elif sort_category == 'all':
+        car_mark = mark_m
+        car_model = model_m
+        file_year = year_m
+        with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
+            data_file = json.load(file)
+        start_sorted_hood(data_file, car_mark)
+        start_sorted_front_fender(data_file, car_mark)
+        start_sorted_headlights(data_file, car_mark)
+        start_sorted_front_bumper(data_file, car_mark)
+        start_sorted_glasses(data_file, car_mark)
+        start_sorted_rear_hood(data_file, car_mark)
+        start_sorted_glasses(data_file, car_mark)
+        start_sorted_engine(data_file, car_mark)
+
+'''
+Передается из файла treat_send маркаа машины, модель машины, год машины(название файла) и список запчастей по которым нужно предоставить данные по ценам, если передается не спиок а строка и равна 'all', то производтся подсчет по все категориям запчастей.
+Отсюда же должен вызываться метод отправки в телеграм клиенту. 
+'''
