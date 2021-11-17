@@ -157,7 +157,8 @@ if __name__ == '__main__':
         except Exception as ex:
             send_message(f'Произошла ошибка {ex} в получении спецификаций моделей!')
             return
-#---------------------------------------------------------------------------------------------START
+
+#---------------------------------------------------------------------------------------------START LIST MODEL1
     for i in LIST_MODEL1:
         try:
             html = get_html(i).text
@@ -165,6 +166,16 @@ if __name__ == '__main__':
         except Exception as ex:
             send_message(f'Произошла ошибка {ex} в основном цикле!')
             continue
+
+# ---------------------------------------------------------------------------------------------START LIST MODEL2
+#     for i in LIST_MODEL2:
+#         try:
+#             html = get_html(i).text
+#             get_list_group_items(html)
+#         except Exception as ex:
+#             send_message(f'Произошла ошибка {ex} в основном цикле!')
+#             continue
+
 
 #---------------------------------------------------------------------------------------------NOTES
 '''
