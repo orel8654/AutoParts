@@ -32,7 +32,7 @@ async def command_start(message:types.Message):
 
 @dp.message_handler(commands=['help'])
 async def command_help(message:types.Message):
-    await bot.send_message(message.from_user.id, 'HELP')
+    await bot.send_message(message.from_user.id, '')
 
 '''----------------------------Обработчик кнопок----------------------------'''
 @dp.message_handler()
@@ -82,28 +82,34 @@ async def processing_text_category(message: types.Message, state: FSMContext):
     async with state.proxy() as proxy:
         if message.text == 'Капот':
             proxy['category'] = message.text
-            message_ret = treat_send.input_main(proxy)
-            await bot.send_message(message.from_user.id, message_ret)
+            if db.check_days_subs(message.from_user.id) == True:
+                message_ret = treat_send.input_main(proxy)
+                await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Крыло':
             proxy['category'] = message.text
-            message_ret = treat_send.input_main(proxy)
-            await bot.send_message(message.from_user.id, message_ret)
+            if db.check_days_subs(message.from_user.id) == True:
+                message_ret = treat_send.input_main(proxy)
+                await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Фара':
             proxy['category'] = message.text
-            message_ret = treat_send.input_main(proxy)
-            await bot.send_message(message.from_user.id, message_ret)
+            if db.check_days_subs(message.from_user.id) == True:
+                message_ret = treat_send.input_main(proxy)
+                await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Стекла':
             proxy['category'] = message.text
-            message_ret = treat_send.input_main(proxy)
-            await bot.send_message(message.from_user.id, message_ret)
+            if db.check_days_subs(message.from_user.id) == True:
+                message_ret = treat_send.input_main(proxy)
+                await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Бампер':
             proxy['category'] = message.text
-            message_ret = treat_send.input_main(proxy)
-            await bot.send_message(message.from_user.id, message_ret)
+            if db.check_days_subs(message.from_user.id) == True:
+                message_ret = treat_send.input_main(proxy)
+                await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Двигатель':
             proxy['category'] = message.text
-            message_ret = treat_send.input_main(proxy)
-            await bot.send_message(message.from_user.id, message_ret)
+            if db.check_days_subs(message.from_user.id) == True:
+                message_ret = treat_send.input_main(proxy)
+                await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Главная':
             await state.finish()
 
