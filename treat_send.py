@@ -57,29 +57,41 @@ def call_in_sorted_with_class(car_mark, car_model, one_file, check_sort_category
     sorting_with_class.start_main(car_mark, car_model, one_file, check_sort_category)
 
 #-----------------------------------------------------------------------------------------------------------------------INPUT DATA
-def input_main(car_mark, car_model, car_spec, class_sorted_category='all'):
-    if class_sorted_category == list(class_sorted_category) and len(class_sorted_category) > 0:
-        car_mark = car_mark.lower()
-        car_model = car_model.replace(' ', '-').lower()
-        car_spec = car_spec.lower()
-        try:
-            one_file = sorted_data_in_file(car_mark, car_model, car_spec)
-        except Exception as ex:
-            print(ex)
-            print('Неправильно введены данные, либо данные о машине отсутвуют!')
-        for i in class_sorted_category:
-            i = i.lower()
-            call_in_sorted_with_class(car_mark, car_model, one_file, i)
-    elif class_sorted_category == str(class_sorted_category) and class_sorted_category == 'all':
-        car_mark = car_mark.lower()
-        car_model = car_model.replace(' ', '-').lower()
-        car_spec = car_spec.lower()
-        try:
-            one_file = sorted_data_in_file(car_mark, car_model, car_spec)
-        except Exception as ex:
-            print(ex)
-            print('Неправильно введены данные, либо данные о машине отсутвуют!')
-        call_in_sorted_with_class(car_mark, car_model, one_file, class_sorted_category)
+# def input_main(car_mark, car_model, car_spec, class_sorted_category='all'):
+def input_main(data):
+    model = data['general'].split(',')
+    car_mark = model[0].strip().lower()
+    car_model = model[1].strip().lower()
+    car_spec = model[-1].strip()
+    category = data['category']
+    category = category.lower()
+    try:
+        one_file = sorted_data_in_file(car_mark, car_model, car_spec)
+        call_in_sorted_with_class(car_mark, car_model, one_file, category)
+    except:
+        return 'Неправильно введены данные, либо данные о машине отсутвуют!'
+    # if class_sorted_category == list(class_sorted_category) and len(class_sorted_category) > 0:
+    #     car_mark = car_mark.lower()
+    #     car_model = car_model.replace(' ', '-').lower()
+    #     car_spec = car_spec.lower()
+    #     try:
+    #         one_file = sorted_data_in_file(car_mark, car_model, car_spec)
+    #     except Exception as ex:
+    #         print(ex)
+    #         print('Неправильно введены данные, либо данные о машине отсутвуют!')
+    #     for i in class_sorted_category:
+    #         i = i.lower()
+    #         call_in_sorted_with_class(car_mark, car_model, one_file, i)
+    # elif class_sorted_category == str(class_sorted_category) and class_sorted_category == 'all':
+    #     car_mark = car_mark.lower()
+    #     car_model = car_model.replace(' ', '-').lower()
+    #     car_spec = car_spec.lower()
+    #     try:
+    #         one_file = sorted_data_in_file(car_mark, car_model, car_spec)
+    #     except Exception as ex:
+    #         print(ex)
+    #         print('Неправильно введены данные, либо данные о машине отсутвуют!')
+    #     call_in_sorted_with_class(car_mark, car_model, one_file, class_sorted_category)
 
 if __name__ == '__main__':
     lst = ['фара']
