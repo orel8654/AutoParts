@@ -409,9 +409,9 @@ def start_sorted_hood(data, mark):
     class_hood = SortedParts()
     epc_average_price_hood, emex_price_hood = class_hood.read_file_for_hood(data, mark)
     try:
-        print(f'Средняя цена капота по AMAYAMA: {epc_average_price_hood} RUB\nМаксимальная цена капота по EMEX: {max(emex_price_hood)} RUB')
+        return f'Средняя цена капота по AMAYAMA: {epc_average_price_hood} RUB\nМаксимальная цена капота по EMEX: {max(emex_price_hood)} RUB'
     except:
-        print('Произошла ошибка, цены по капотам не найдены!')
+        return 'Произошла ошибка, цены по капотам не найдены!'
 
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted NUMBERS PARTS
 def start_sorted_numbers(data, mark, numbers=['19000-31330']):
@@ -435,9 +435,9 @@ def start_sorted_front_fender(data, mark):
     class_front_fender = SortedParts()
     average_price_underfender, average_price_fender, max_price_fender_emex, max_price_underfender_emex = class_front_fender.read_file_for_front_fender(data, mark)
     try:
-        print(f'Средняя цена крыла: {average_price_fender} RUB\nСредняя цена подкрылка: {average_price_underfender} RUB\nМаксимальная цена крыла по EMEX {max(max_price_fender_emex)} RUB\nМаксимальная цена подкрылка по EMEX {max(max_price_underfender_emex)} RUB')
+        return f'Средняя цена крыла: {average_price_fender} RUB\nСредняя цена подкрылка: {average_price_underfender} RUB\nМаксимальная цена крыла по EMEX {max(max_price_fender_emex)} RUB\nМаксимальная цена подкрылка по EMEX {max(max_price_underfender_emex)} RUB'
     except ValueError:
-        print(f'Произошла ошибка, цены по крыльям не найдены!')
+        return f'Произошла ошибка, цены по крыльям не найдены!'
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted REAR FENDER
 def start_sorted_rear_fender(data):
     pass
@@ -447,51 +447,53 @@ def start_sorted_headlights(data, mark):
     class_headlights = SortedParts()
     average_price_headlights, emex_max_price_headlights = class_headlights.read_file_for_electric(data, mark)
     try:
-        print(f'Средняя цена фары по AMAYAMA: {average_price_headlights} RUB\nМаксимальная цена фары по EMEX: {max(emex_max_price_headlights)}')
+        return f'Средняя цена фары по AMAYAMA: {average_price_headlights} RUB\nМаксимальная цена фары по EMEX: {max(emex_max_price_headlights)}'
     except ValueError:
-        print('Произошла ошибка, цены по фарам не найдены!')
+        return 'Произошла ошибка, цены по фарам не найдены!'
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted FRONT BUMPER
 def start_sorted_front_bumper(data, mark):
     class_front_bumper = SortedParts()
     average_price_front_bumper, emex_max_price_front_bumper = class_front_bumper.read_file_for_front_bumper(data, mark)
     try:
-        print(f'Средняя цена переднего бампера AMAYAMA: {average_price_front_bumper} RUB\nМаксимальная цена переднего бампера по EMEX: {max(emex_max_price_front_bumper)} RUB')
+        return f'Средняя цена переднего бампера AMAYAMA: {average_price_front_bumper} RUB\nМаксимальная цена переднего бампера по EMEX: {max(emex_max_price_front_bumper)} RUB'
     except ValueError:
-        print('Произошла ошибка, цены по бамперам не найдены!')
+        return 'Произошла ошибка, цены по бамперам не найдены!'
 
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted REAR BUMPER
 def start_sorted_rear_bumper(data, mark):
     class_rear_bumper = SortedParts()
     average_price_rear_bumper, emex_max_price_rear_bumper = class_rear_bumper.read_file_for_rear_bumper(data, mark)
     try:
-        print(f'Средняя цена заднего бампера: {average_price_rear_bumper} RUB\nМаксимальная цена переднего бампера по EMEX: {max(emex_max_price_rear_bumper)} RUB')
+        return f'Средняя цена заднего бампера: {average_price_rear_bumper} RUB\nМаксимальная цена переднего бампера по EMEX: {max(emex_max_price_rear_bumper)} RUB'
     except ValueError:
-        print('Произошла ошибка, цены по бамперам не найдены!')
+        return 'Произошла ошибка, цены по бамперам не найдены!'
 
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted REAR HOOD (BACK DOOR)
 def start_sorted_rear_hood(data, mark):
     class_rear_hood = SortedParts()
     average_price_rear_hood, emex_max_price_rear_hood = class_rear_hood.read_file_for_rear_hood(data, mark)
     try:
-        print(f'Средняя цена крышки багажника: {average_price_rear_hood} RUB\nМаксимальная цена крышки багажника по EMEX: {max(emex_max_price_rear_hood)}')
+        return f'Средняя цена крышки багажника: {average_price_rear_hood} RUB\nМаксимальная цена крышки багажника по EMEX: {max(emex_max_price_rear_hood)}'
     except ValueError:
-        print(f'Произошла ошибка, цены по багажникам не найдены!')
+        return f'Произошла ошибка, цены по багажникам не найдены!'
 
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted GLASSES
 def start_sorted_glasses(data, mark):
     class_glasses = SortedParts()
     ama_windshield, ama_doors_gl, ama_rear_window, emex_windshield, emex_doors_gl, emex_rear_window = class_glasses.read_file_for_glasses(data, mark)
-    print(f'AMAYAMA: средняя цена лобового стекла - {ama_windshield} RUB, средняя цена бокового стекла - {ama_doors_gl} RUB, средняя цена заднего стекла - {ama_rear_window} RUB')
-    print(f'EMEX: средняя цена лобового стекла - {max(emex_windshield)} RUB, средняя цена бокового стекла - {max(emex_doors_gl)} RUB, средняя цена заднего стекла - {max(emex_rear_window)} RUB')
+    try:
+        return f'AMAYAMA: средняя цена лобового стекла - {ama_windshield} RUB, средняя цена бокового стекла - {ama_doors_gl} RUB, средняя цена заднего стекла - {ama_rear_window} RUB\nEMEX: средняя цена лобового стекла - {max(emex_windshield)} RUB, средняя цена бокового стекла - {max(emex_doors_gl)} RUB, средняя цена заднего стекла - {max(emex_rear_window)} RUB'
+    except ValueError:
+        return f'AMAYAMA: средняя цена лобового стекла - {ama_windshield} RUB, средняя цена бокового стекла - {ama_doors_gl} RUB, средняя цена заднего стекла - {ama_rear_window} RUB'
 
 #-----------------------------------------------------------------------------------------------------------------------Start def sorted ENGINE
 def start_sorted_engine(data, mark):
     class_engine = SortedParts()
     ama_average_engine, emex_max_engine = class_engine.read_file_for_engine(data, mark)
     try:
-        print(f'Средняя цена AMAYAMA: {ama_average_engine} RUB\nМаксимальная цена EMEX: {max(emex_max_engine)} RUB')
+        return f'Средняя цена AMAYAMA: {ama_average_engine} RUB\nМаксимальная цена EMEX: {max(emex_max_engine)} RUB'
     except:
-        print(f'Средняя цена AMAYAMA: {ama_average_engine} RUB\nМаксимальная цена по EMEX: Не найдено!')
+        return f'Средняя цена AMAYAMA: {ama_average_engine} RUB\nМаксимальная цена по EMEX: Не найдено!'
 
 #-----------------------------------------------------------------------------------------------------------------------Def input and sorted with class part
 def start_main(mark_m, model_m, year_m, sort_category):
@@ -502,22 +504,22 @@ def start_main(mark_m, model_m, year_m, sort_category):
         with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
             data_file = json.load(file)
         if sort_category == 'капот':
-            start_sorted_hood(data_file, car_mark)
+            return start_sorted_hood(data_file, car_mark)
         elif sort_category == 'номер':
-            start_sorted_numbers(data_file, car_mark)
+            return start_sorted_numbers(data_file, car_mark)
         elif sort_category == 'крыло':
-            start_sorted_front_fender(data_file, car_mark)
+            return start_sorted_front_fender(data_file, car_mark)
         elif sort_category == 'фара':
-            start_sorted_headlights(data_file, car_mark)
+            return start_sorted_headlights(data_file, car_mark)
         elif sort_category == 'бампер':
-            start_sorted_front_bumper(data_file, car_mark) #Требует доработки
+            return start_sorted_front_bumper(data_file, car_mark) #Требует доработки
         # start_sorted_rear_bumper(data_file, car_mark) #Требует доработки по сути одинаковы
         elif sort_category == 'багажник':
-            start_sorted_rear_hood(data_file, car_mark)
+            return start_sorted_rear_hood(data_file, car_mark)
         elif sort_category == 'стекла':
-            start_sorted_glasses(data_file, car_mark)
+            return start_sorted_glasses(data_file, car_mark)
         elif sort_category == 'двигатель':
-            start_sorted_engine(data_file, car_mark)
+            return start_sorted_engine(data_file, car_mark)
     elif sort_category == list(sort_category):
         car_mark = mark_m
         car_model = model_m
@@ -548,14 +550,15 @@ def start_main(mark_m, model_m, year_m, sort_category):
         file_year = year_m
         with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
             data_file = json.load(file)
-        start_sorted_hood(data_file, car_mark)
-        start_sorted_front_fender(data_file, car_mark)
-        start_sorted_headlights(data_file, car_mark)
-        start_sorted_front_bumper(data_file, car_mark)
-        start_sorted_glasses(data_file, car_mark)
-        start_sorted_rear_hood(data_file, car_mark)
-        start_sorted_glasses(data_file, car_mark)
-        start_sorted_engine(data_file, car_mark)
+        a1 = start_sorted_hood(data_file, car_mark)
+        a2 = start_sorted_front_fender(data_file, car_mark)
+        a3 = start_sorted_headlights(data_file, car_mark)
+        a4 = start_sorted_front_bumper(data_file, car_mark)
+        a5 = start_sorted_glasses(data_file, car_mark)
+        a6 = start_sorted_rear_hood(data_file, car_mark)
+        a7 = start_sorted_glasses(data_file, car_mark)
+        a8 = start_sorted_engine(data_file, car_mark)
+        return f'{a1}\n{a2}\n{a3}\n{a4}\n{a5}\n{a6}\n{a7}\n{a8}'
 
 '''
 Передается из файла treat_send маркаа машины, модель машины, год машины(название файла) и список запчастей по которым нужно предоставить данные по ценам, если передается не спиок а строка и равна 'all', то производтся подсчет по все категориям запчастей.

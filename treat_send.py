@@ -54,7 +54,7 @@ def sorted_data_in_file(car_mark, car_model, car_spec):
     return one_file
 #-----------------------------------------------------------------------------------------------------------------------CALL IN SORTED_WITH_CLASS
 def call_in_sorted_with_class(car_mark, car_model, one_file, check_sort_category):
-    sorting_with_class.start_main(car_mark, car_model, one_file, check_sort_category)
+    return sorting_with_class.start_main(car_mark, car_model, one_file, check_sort_category)
 
 #-----------------------------------------------------------------------------------------------------------------------INPUT DATA
 # def input_main(car_mark, car_model, car_spec, class_sorted_category='all'):
@@ -67,7 +67,8 @@ def input_main(data):
     category = category.lower()
     try:
         one_file = sorted_data_in_file(car_mark, car_model, car_spec)
-        call_in_sorted_with_class(car_mark, car_model, one_file, category)
+        mes_ret = call_in_sorted_with_class(car_mark, car_model, one_file, category)
+        return mes_ret
     except:
         return 'Неправильно введены данные, либо данные о машине отсутвуют!'
     # if class_sorted_category == list(class_sorted_category) and len(class_sorted_category) > 0:

@@ -82,17 +82,28 @@ async def processing_text_category(message: types.Message, state: FSMContext):
     async with state.proxy() as proxy:
         if message.text == 'Капот':
             proxy['category'] = message.text
-            treat_send.input_main(proxy)
+            message_ret = treat_send.input_main(proxy)
+            await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Крыло':
             proxy['category'] = message.text
+            message_ret = treat_send.input_main(proxy)
+            await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Фара':
             proxy['category'] = message.text
+            message_ret = treat_send.input_main(proxy)
+            await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Стекла':
             proxy['category'] = message.text
+            message_ret = treat_send.input_main(proxy)
+            await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Бампер':
             proxy['category'] = message.text
+            message_ret = treat_send.input_main(proxy)
+            await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Двигатель':
             proxy['category'] = message.text
+            message_ret = treat_send.input_main(proxy)
+            await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Главная':
             await state.finish()
 
