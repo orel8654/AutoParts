@@ -497,59 +497,28 @@ def start_sorted_engine(data, mark):
 
 #-----------------------------------------------------------------------------------------------------------------------Def input and sorted with class part
 def start_main(mark_m, model_m, year_m, sort_category):
-    if sort_category == str(sort_category):
-        car_mark = mark_m
-        car_model = model_m
-        file_year = year_m
-        with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
-            data_file = json.load(file)
-        if sort_category == 'капот':
-            return start_sorted_hood(data_file, car_mark)
-        elif sort_category == 'номер':
-            return start_sorted_numbers(data_file, car_mark)
-        elif sort_category == 'крыло':
-            return start_sorted_front_fender(data_file, car_mark)
-        elif sort_category == 'фара':
-            return start_sorted_headlights(data_file, car_mark)
-        elif sort_category == 'бампер':
-            return start_sorted_front_bumper(data_file, car_mark) #Требует доработки
-        # start_sorted_rear_bumper(data_file, car_mark) #Требует доработки по сути одинаковы
-        elif sort_category == 'багажник':
-            return start_sorted_rear_hood(data_file, car_mark)
-        elif sort_category == 'стекла':
-            return start_sorted_glasses(data_file, car_mark)
-        elif sort_category == 'двигатель':
-            return start_sorted_engine(data_file, car_mark)
-    elif sort_category == list(sort_category):
-        car_mark = mark_m
-        car_model = model_m
-        file_year = year_m
-        for i in sort_category:
-            with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
-                data_file = json.load(file)
-            if i == 'капот':
-                start_sorted_hood(data_file, car_mark)
-            elif i == 'номер':
-                start_sorted_numbers(data_file, car_mark)
-            elif i == 'крыло':
-                start_sorted_front_fender(data_file, car_mark)
-            elif i == 'фара':
-                start_sorted_headlights(data_file, car_mark)
-            elif i == 'бампер':
-                start_sorted_front_bumper(data_file, car_mark)  # Требует доработки
-            # start_sorted_rear_bumper(data_file, car_mark) #Требует доработки по сути одинаковы
-            elif i == 'багажник':
-                start_sorted_rear_hood(data_file, car_mark)
-            elif i == 'стекла':
-                start_sorted_glasses(data_file, car_mark)
-            elif i == 'двигатель':
-                start_sorted_engine(data_file, car_mark)
-    elif sort_category == 'all':
-        car_mark = mark_m
-        car_model = model_m
-        file_year = year_m
-        with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
-            data_file = json.load(file)
+    car_mark = mark_m
+    car_model = model_m
+    file_year = year_m
+    with open(f'models/{car_mark}/{car_model}/{file_year}') as file:
+        data_file = json.load(file)
+    if sort_category == 'Капот':
+        return start_sorted_hood(data_file, car_mark)
+    elif sort_category == 'Номер':
+        return start_sorted_numbers(data_file, car_mark)
+    elif sort_category == 'Крыло':
+        return start_sorted_front_fender(data_file, car_mark)
+    elif sort_category == 'Фара':
+        return start_sorted_headlights(data_file, car_mark)
+    elif sort_category == 'Бампер':
+        return start_sorted_front_bumper(data_file, car_mark)
+    elif sort_category == 'Багажник':
+        return start_sorted_rear_hood(data_file, car_mark)
+    elif sort_category == 'Стекла':
+        return start_sorted_glasses(data_file, car_mark)
+    elif sort_category == 'Двигатель':
+        return start_sorted_engine(data_file, car_mark)
+    elif sort_category == 'Все позиции':
         a1 = start_sorted_hood(data_file, car_mark)
         a2 = start_sorted_front_fender(data_file, car_mark)
         a3 = start_sorted_headlights(data_file, car_mark)

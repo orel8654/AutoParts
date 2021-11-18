@@ -47,14 +47,12 @@ async def echo_send(message: types.Message):
                 else:
                     await bot.send_message(message.from_user.id, 'Аутентификация пройдена!', reply_markup=markups.activate_program)
         elif message.text == 'Оформить подписку!':
-            #-----------------------------------------------ЗДЕСЬ МЕТОД ДОБАВЛЕНИЯ ПОДПИСКИ
             #-----------------------------------------------ЕСЛИ ТРАНЗАКЦИЯ УСПЕШНА
             if db.user_add(message.from_user.id) == True:
                 await bot.send_message(message.from_user.id, 'Подписка успешна добавлена!', reply_markup=markups.start_btn)
             else:
                 await bot.send_message(message.from_user.id, 'Произошла ошибка! Напишите пожалуйста, администратору для решения проблемы!')
         elif message.text == 'Продлить подписку!':
-            #-----------------------------------------------ЗДЕСЬ МЕТОД ПРОДЛЕНИЯ ПОДПИСКИ
             #-----------------------------------------------ЕСЛИ ТРАНЗАКЦИЯ УСПЕШНА
             if db.user_update(message.from_user.id) == True:
                 await bot.send_message(message.from_user.id, 'Ваша подписка успешна продлена!', reply_markup=markups.start_btn)
@@ -106,6 +104,11 @@ async def processing_text_category(message: types.Message, state: FSMContext):
                 message_ret = treat_send.input_main(proxy)
                 await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Двигатель':
+            proxy['category'] = message.text
+            if db.check_days_subs(message.from_user.id) == True:
+                message_ret = treat_send.input_main(proxy)
+                await bot.send_message(message.from_user.id, message_ret)
+        elif message.text == 'Все позиции':
             proxy['category'] = message.text
             if db.check_days_subs(message.from_user.id) == True:
                 message_ret = treat_send.input_main(proxy)
