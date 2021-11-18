@@ -2,7 +2,8 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMar
 
 btn_count = KeyboardButton('Сделать расчет!')
 btn_subs = KeyboardButton('Оформить подписку!')
-start_btn = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_count, btn_subs)
-
-subs_profile = KeyboardButton('ПОДПИСКА')
-subs_keyboard = ReplyKeyboardMarkup(resize_keyboard=True).add(subs_profile)
+btn_back = KeyboardButton('Главная')
+btn_continue_subs = KeyboardButton('Продлить подписку!')
+start_btn = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_count)
+subs_btn = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_subs, btn_back)
+continue_subs_btn = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_continue_subs, btn_back)

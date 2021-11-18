@@ -15,9 +15,6 @@ dp = Dispatcher(bot)
 async def on_startup(_):
     print('Bot is online!')
 
-def check_subscribe():
-    pass
-
 '''----------------------------Команды /----------------------------'''
 @dp.message_handler(commands=['start'])
 async def command_start(message:types.Message):
@@ -33,9 +30,29 @@ async def command_help(message:types.Message):
 async def echo_send(message: types.Message):
     if message.chat.type == 'private':
         if message.text == 'Сделать расчет!':
-            await bot.send_message(message.from_user.id, 'Считаем!')
+            if db.user_id_check(message.from_user.id) == False:
+                await bot.send_message(message.from_user.id, 'Вы новый пользователь! Хотите оформить подписку или вернутся?', reply_markup=markups.subs_btn)
+            else:
+                if db.check_days_subs(message.from_user.id) == False:
+                    await bot.send_message(message.from_user.id, 'У вас закончилась подписка! Хотите продлить?', reply_markup=markups.continue_subs_btn)
+                else:
+                    await bot.send_message(message.from_user.id, 'Допуск получен!')
         elif message.text == 'Оформить подписку!':
-            await bot.send_message(message.from_user.id, 'Делаем подписку!')
+            #-----------------------------------------------ЗДЕСЬ МЕТОД ДОБАВЛЕНИЯ ПОДПИСКИ
+            #-----------------------------------------------ЕСЛИ ТРАНЗАКЦИЯ УСПЕШНА
+            if db.user_add(message.from_user.id) == True:
+                await bot.send_message(message.from_user.id, 'Подписка успешна добавлена!', reply_markup=markups.start_btn)
+            else:
+                await bot.send_message(message.from_user.id, 'Произошла ошибка! Напишите пожалуйста, администратору для решения проблемы!')
+        elif message.text == 'Продлить подписку!':
+            #-----------------------------------------------ЗДЕСЬ МЕТОД ПРОДЛЕНИЯ ПОДПИСКИ
+            #-----------------------------------------------ЕСЛИ ТРАНЗАКЦИЯ УСПЕШНА
+            if db.user_update(message.from_user.id) == True:
+                await bot.send_message(message.from_user.id, 'Ваша подписка успешна продлена!', reply_markup=markups.start_btn)
+            else:
+                await bot.send_message(message.from_user.id, 'Произошла ошибка! Напишите пожалуйста, администратору для решения проблемы!')
+        elif message.text == 'Главная':
+            await bot.send_message(message.from_user.id, 'Какие действия сделать?', reply_markup=markups.start_btn)
 
 
 if __name__ == '__main__':
