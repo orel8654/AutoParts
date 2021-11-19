@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+
+import amayama_parser_additionally
 from config import *
 import time
 import os.path
@@ -69,7 +71,7 @@ def get_title(link):
             parts.append({
                 'link' : 'https://www.amayama.com' + href,
                 'title' : {
-                    'attr': get_attr('https://www.amayama.com' + href),
+                    'attr': amayama_parser_additionally.check_out('https://www.amayama.com' + href),
                 },
             })
         except Exception as ex:
@@ -97,7 +99,7 @@ def valid_writer(link):
         ret = path.exists(f'models/{mark_car}/{model_car}/{spec_car}.json')
         return ret
     else:
-        return True
+        return False
 
 def check(all_link):
     rules = valid_writer(all_link)
@@ -134,7 +136,7 @@ if __name__ == '__main__':
             hrefs = items.find_all('a')
             for href in hrefs:
                 check('https://www.amayama.com' + href.get('href'))
-                send_message(f'Ссылка {href} парсинг закончен!')
+                send_message(f'Ссылка {href.get("href")} парсинг закончен!')
         except:
             try:
                 items = soup.find('table')
