@@ -462,7 +462,7 @@ def start_main(mark_m, model_m, year_m, sort_category):
         a11 = start_sorted_srs(data_file, car_mark)
         return f'{a1}\n\n{a2}\n\n{a3}\n\n{a4}\n\n{a5}\n\n{a6}\n\n{a7}\n\n{a8}\n\n{a9}\n\n{a10}\n\n{a11}'
 
-print(start_main('toyota', 'auris', '1-hatchback-right-e150-2006-3309.json', 'SRS'))
+# print(start_main('toyota', 'auris', '1-hatchback-right-e150-2006-3309.json', 'SRS'))
 '''
 Передается из файла treat_send маркаа машины, модель машины, год машины(название файла) и список запчастей по которым нужно предоставить данные по ценам, если передается не спиок а строка и равна 'all', то производтся подсчет по все категориям запчастей.
 Отсюда же должен вызываться метод отправки в телеграм клиенту. 

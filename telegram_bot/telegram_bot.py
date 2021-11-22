@@ -3,6 +3,8 @@ from aiogram import Bot, types, executor, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
+
+import emex_parser_most_bigger_cost
 import treat_send
 from config import TELEGRAM_TOKEN_BOT_GENERAL, LIST_CAR_MARKS
 import asyncio
@@ -20,7 +22,8 @@ class Form(StatesGroup):
     general = State()
     category = State()
 
-
+class Big(StatesGroup):
+    car_mark = State()
 
 '''----------------------------Рабочая информация----------------------------'''
 async def on_startup(_):
@@ -74,11 +77,21 @@ async def echo_send(message: types.Message):
             await bot.send_message(message.from_user.id, 'Введите марку, модель, год начала производства автомобиля через апятую, например (toyota, allex, 2001)"', reply_markup=markups.input_btn)
             await Form.general.set()
         elif message.text == 'Выборка по цене':
-            await bot.send_message(message.from_user.id, 'Тут будет отображаться список дорогих запчастей и автомобилей!', reply_markup=markups.activate_program)
+            await bot.send_message(message.from_user.id, 'Выберите марку автомобиля, чтобы вывести максимальную цену запчасти!', reply_markup=markups.btn_marks_category)
+            await Big.car_mark.set()
 
+'''----------------------------Обработчик машины состояния для Выборка по цене----------------------------'''
+@dp.message_handler(state=Big.car_mark)
+async def processing_car(message: types.Message, state: FSMContext):
+    async with state.proxy() as proxy:
+        if message.text != 'Главная':
+            proxy['car_mark'] = message.text
+            ret_message = emex_parser_most_bigger_cost.input_main(proxy)
+            await bot.send_message(message.from_user.id, ret_message)
+        else:
+            await state.finish()
 
-
-'''----------------------------Обработчик текста----------------------------'''
+'''----------------------------Обработчик машины состояния для Выборка по модели----------------------------'''
 @dp.message_handler(state=Form.general)
 async def processing_text(message: types.Message, state: FSMContext):
     async with state.proxy() as proxy:
