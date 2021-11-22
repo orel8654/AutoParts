@@ -20,19 +20,29 @@ class Form(StatesGroup):
     general = State()
     category = State()
 
+
+
 '''----------------------------Рабочая информация----------------------------'''
 async def on_startup(_):
     print('Bot is online!')
+
+
 
 '''----------------------------Команды /----------------------------'''
 @dp.message_handler(commands=['start'])
 async def command_start(message:types.Message):
     if message.chat.type == 'private':
-        await bot.send_message(message.from_user.id, 'Привет, {0.first_name}'.format(message.from_user), reply_markup=markups.start_btn)
+        await bot.send_message(message.from_user.id, 'Привет, {0.first_name}! Я помогу тебе получить информацию о ценах запчастей!\n/help - инструкция по использованию бота!\n/info - дополнительная информация о проекте!'.format(message.from_user), reply_markup=markups.start_btn)
 
 @dp.message_handler(commands=['help'])
 async def command_help(message:types.Message):
-    await bot.send_message(message.from_user.id, '')
+    await bot.send_message(message.from_user.id, 'Здесь помощь по командам!')
+
+@dp.message_handler(commands=['info'])
+async def command_info(message:types.Message):
+    await bot.send_message(message.from_user.id, 'Здесь информация о боте или что-то другое!')
+
+
 
 '''----------------------------Обработчик кнопок----------------------------'''
 @dp.message_handler()
@@ -63,6 +73,10 @@ async def echo_send(message: types.Message):
         elif message.text == 'Выборка по модели':
             await bot.send_message(message.from_user.id, 'Введите марку, модель, год начала производства автомобиля через апятую, например (toyota, allex, 2001)"', reply_markup=markups.input_btn)
             await Form.general.set()
+        elif message.text == 'Выборка по цене':
+            await bot.send_message(message.from_user.id, 'Тут будет отображаться список дорогих запчастей и автомобилей!', reply_markup=markups.activate_program)
+
+
 
 '''----------------------------Обработчик текста----------------------------'''
 @dp.message_handler(state=Form.general)
@@ -99,6 +113,21 @@ async def processing_text_category(message: types.Message, state: FSMContext):
                 message_ret = treat_send.input_main(proxy)
                 await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Бампер':
+            proxy['category'] = message.text
+            if db.check_days_subs(message.from_user.id) == True:
+                message_ret = treat_send.input_main(proxy)
+                await bot.send_message(message.from_user.id, message_ret)
+        elif message.text == 'Багажник':
+            proxy['category'] = message.text
+            if db.check_days_subs(message.from_user.id) == True:
+                message_ret = treat_send.input_main(proxy)
+                await bot.send_message(message.from_user.id, message_ret)
+        elif message.text == 'Двери':
+            proxy['category'] = message.text
+            if db.check_days_subs(message.from_user.id) == True:
+                message_ret = treat_send.input_main(proxy)
+                await bot.send_message(message.from_user.id, message_ret)
+        elif message.text == 'SRS':
             proxy['category'] = message.text
             if db.check_days_subs(message.from_user.id) == True:
                 message_ret = treat_send.input_main(proxy)
