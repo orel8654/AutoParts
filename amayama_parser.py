@@ -118,7 +118,7 @@ def check(all_link):
                     'all_parts' : get_title('https://www.amayama.com' + href),
                     'link' : 'https://www.amayama.com' + href,
                 })
-                print(all_parts)
+                # print(all_parts)
             save_json(all_parts, all_link)
         except Exception as ex:
             print(ex)
