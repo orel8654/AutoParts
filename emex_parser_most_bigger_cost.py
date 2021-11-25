@@ -5,6 +5,7 @@ import os
 from os import path
 import time
 from heapq import nlargest
+import recaptcha
 
 def sorted_max_price_all_items(data): #---------------------------------------------------------------------------------СОРТИРОВКА МАКСИМАЛЬНОЙ ЦЕНЫ ЗАПЧАСТИ
     max_item = 0
@@ -83,9 +84,9 @@ def input_main(car_mark): #-----------------------------------------------------
     emex_price = []
     emex_price.extend(emex_parser.main(check_lst["number"], emex_mark))
     try:
-        return f'Название машины: {check_mark}\nНаименование детали: {check_lst["name"]}\nСсылка: {check_lst["link"]}\nНомер детали: {check_lst["number"]}\nМаксимальная цена по AMAYAMA: {check_lst["price"]} RUB\nМаксимальная цена по EMEX: {max(emex_price)} RUB'
+        return f'Название машины: {check_mark}\nНаименование детали: {check_lst["name"]}\nСсылка: {check_lst["link"]}\nНомер детали: {check_lst["number"]}\nМаксимальная цена по AMAYAMA: {check_lst["price"]} RUB\nМаксимальная цена по EMEX: {max(emex_price)} RUB\n\n{recaptcha.find_past(check_lst["number"], car_mark)}'
     except:
-        return f'Название машины: {check_mark}\nНаименование детали: {check_lst["name"]}\nСсылка: {check_lst["link"]}\nНомер детали: {check_lst["number"]}\nМаксимальная цена по AMAYAMA: {check_lst["price"]} RUB\nМаксимальная цена по EMEX не найдена!'
+        return f'Название машины: {check_mark}\nНаименование детали: {check_lst["name"]}\nСсылка: {check_lst["link"]}\nНомер детали: {check_lst["number"]}\nМаксимальная цена по AMAYAMA: {check_lst["price"]} RUB\nМаксимальная цена по EMEX не найдена!\n\n{recaptcha.find_past(check_lst["number"], car_mark)}'
 
 
 # def input_tg(data):
