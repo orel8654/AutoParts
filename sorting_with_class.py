@@ -264,6 +264,20 @@ class SortedParts:
         else:
             return None
 
+    def read_file_for_all_list(self, data, car_mark):
+        ama_price = []
+        emex_price = []
+        cnt = 0
+        for i in data:
+            for j in i['all_parts']:
+                for k in j['title']['attr']:
+                    if k['price'] > 90000:
+                        cnt += 1
+                        try:
+                            ama_price.append(k)
+                        except:
+                            continue
+        return ama_price
 
 
 
@@ -420,7 +434,11 @@ def start_sorted_srs(data, mark):
     else:
         return f'Информации по SRS не найдено!'
 
-
+#-----------------------------------------------------------------------------------------------------------------------Start def sorted Все позиции
+def start_sorted_all_items_list(data, mark):
+    class_engine = SortedParts()
+    ama_price_dict = class_engine.read_file_for_all_list(data, mark)
+    return ama_price_dict
 
 #-----------------------------------------------------------------------------------------------------------------------Def input and sorted with class part
 def start_main(mark_m, model_m, year_m, sort_category):
@@ -465,8 +483,11 @@ def start_main(mark_m, model_m, year_m, sort_category):
         a10 = start_sorted_doors(data_file, car_mark)
         a11 = start_sorted_srs(data_file, car_mark)
         return f'{a1}\n\n{a2}\n\n{a3}\n\n{a4}\n\n{a5}\n\n{a6}\n\n{a7}\n\n{a8}\n\n{a9}\n\n{a10}\n\n{a11}'
+    elif sort_category == 'Список позиций':
+        a1 = start_sorted_all_items_list(data_file, car_mark)
+        return a1
 
-# print(start_main('toyota', 'auris', '1-hatchback-right-e150-2006-3309.json', 'SRS'))
+# print(start_main('nissan', 'elgrand', '1-van-3-right-e50-2000-r-1546.json', 'Список позиций'))
 '''
 Передается из файла treat_send маркаа машины, модель машины, год машины(название файла) и список запчастей по которым нужно предоставить данные по ценам, если передается не спиок а строка и равна 'all', то производтся подсчет по все категориям запчастей.
 Отсюда же должен вызываться метод отправки в телеграм клиенту. 

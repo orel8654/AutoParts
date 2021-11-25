@@ -178,6 +178,18 @@ async def processing_text_category(message: types.Message, state: FSMContext):
             if db.check_days_subs(message.from_user.id) == True:
                 message_ret = treat_send.input_main(proxy)
                 await bot.send_message(message.from_user.id, message_ret)
+        elif message.text == 'Список позиций':
+            proxy['category'] = message.text
+            if db.check_days_subs(message.from_user.id) == True:
+                message_ret = treat_send.input_main(proxy)
+                if message_ret == list(message_ret):
+                    cnt = 0
+                    for i in message_ret:
+                        await bot.send_message(message.from_user.id, f'Наименование: {i["name"]}\nСтоимость: {i["price"]}\nНомер запчасти: {i["number"]}\nСсылка: {i["link"]}')
+                        cnt += 1
+                    await bot.send_message(message.from_user.id, f'Всего позиций более 90000 RUB: {cnt}\nКаталог AMAYAMA, пожалуйста проверьте на сайте РСА!')
+                else:
+                    await bot.send_message(message.from_user.id, message_ret)
         elif message.text == 'Главная':
             await state.finish()
 
