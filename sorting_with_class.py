@@ -276,7 +276,8 @@ def start_sorted_hood(data, mark):
     if ama_price_dict != '':
         try:
             return f'Максимальная цена капота по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена капота по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
-        except:
+        except Exception as ex:
+            print(f'sorting\nhood\n{ex}')
             return f'Максимальная цена капота по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по капоту не найдено!'
@@ -304,7 +305,8 @@ def start_sorted_front_fender(data, mark):
     if ama_price_dict != '':
         try:
             return f'Максимальная цена крыла по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена крыла по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
-        except:
+        except Exception as ex:
+            print(f'sorting\nfender\n{ex}')
             return f'Максимальная цена капота по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по капоту не найдено!'
@@ -316,7 +318,8 @@ def start_sorted_headlights(data, mark):
     if ama_price_dict != '':
         try:
             return f'Максимальная цена фары по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена фары по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
-        except:
+        except Exception as ex:
+            print(f'sorting\nheadlights\n{ex}')
             return f'Максимальная цена фары по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по фарам не найдено!'

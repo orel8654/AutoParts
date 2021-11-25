@@ -61,6 +61,60 @@ def find_past(part_number, car_mark):
         elif car_mark.lower() == 'nissan':
             class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[42]').click()
             time.sleep(1)
+        elif car_mark.lower() == 'toyota':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[55]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'honda':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[23]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'mazda':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[36]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'mitsubishi':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[41]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'suzuki':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[54]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'acura':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[2]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'audi':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[3]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'bmw':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[4]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'cadillac':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[6]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'chery':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[7]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'chevrolet':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[8]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'ford':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[18]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'hyundai':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[24]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'infiniti':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[25]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'kia':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[30]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'lexus':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[33]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'porsche':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[45]').click()
+            time.sleep(1)
+        elif car_mark.lower() == 'volkswagen':
+            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[57]').click()
+            time.sleep(1)
 
         #---------------------------------------------------------------------------------------------------------------INPUT PART NUMBER
         class_part = driver.find_element_by_xpath('//*[@id="article1"]')
@@ -101,9 +155,9 @@ def find_past(part_number, car_mark):
         driver.quit()
         return f'Номер детали: {number}\nЦена по РСА: {price}\nНаименование запчасти: {part_name}'
     except Exception as ex:
-        print(ex)
+        print(f'recaptcha\ngeneral_loop\n{ex}')
         driver.quit()
-
+        return f'Что-то пошло не так, пожалуйста повторите попытку позже, либо измените параметры!'
 if __name__ == '__main__':
     find_past('21460-VG100', 'nissan')
 

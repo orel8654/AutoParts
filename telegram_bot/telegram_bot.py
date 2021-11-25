@@ -11,6 +11,7 @@ import asyncio
 import markups
 from aiogram.types.message import ContentTypes
 import db
+import recaptcha_treat
 
 logging.basicConfig(level=logging.INFO)
 loop = asyncio.get_event_loop()
@@ -25,6 +26,10 @@ class Form(StatesGroup):
 class Big(StatesGroup):
     car_mark = State()
 
+class RCA(StatesGroup):
+    car_mark = State()
+    part_number = State()
+
 '''----------------------------Рабочая информация----------------------------'''
 async def on_startup(_):
     print('Bot is online!')
@@ -35,15 +40,19 @@ async def on_startup(_):
 @dp.message_handler(commands=['start'])
 async def command_start(message:types.Message):
     if message.chat.type == 'private':
-        await bot.send_message(message.from_user.id, 'Привет, {0.first_name}! Я помогу тебе получить информацию о ценах запчастей!\n/help - инструкция по использованию бота!\n/info - дополнительная информация о проекте!'.format(message.from_user), reply_markup=markups.start_btn)
+        await bot.send_message(message.from_user.id, 'Привет, {0.first_name}! Я помогу тебе получить информацию о ценах запчастей!\n/help - инструкция по использованию бота!\n/info - дополнительная информация о проекте!\n/supmod - каталог моделей'.format(message.from_user), reply_markup=markups.start_btn)
 
 @dp.message_handler(commands=['help'])
 async def command_help(message:types.Message):
-    await bot.send_message(message.from_user.id, 'Здесь помощь по командам!')
+    await bot.send_message(message.from_user.id, f'{markups.CMD_HELP}')
 
 @dp.message_handler(commands=['info'])
 async def command_info(message:types.Message):
-    await bot.send_message(message.from_user.id, 'Здесь информация о боте или что-то другое!')
+    await bot.send_message(message.from_user.id, f'{markups.CMD_INFO}')
+
+@dp.message_handler(commands=['supmod'])
+async def command_info(message:types.Message):
+    await bot.send_message(message.from_user.id, f'{markups.CMD_SUPMOD}')
 
 
 
@@ -74,11 +83,25 @@ async def echo_send(message: types.Message):
         elif message.text == 'Главная':
             await bot.send_message(message.from_user.id, 'Какие действия сделать?', reply_markup=markups.activate_program)
         elif message.text == 'Выборка по модели':
-            await bot.send_message(message.from_user.id, 'Введите марку, модель, год начала производства автомобиля через апятую, например (toyota, allex, 2001)"', reply_markup=markups.input_btn)
+            await bot.send_message(message.from_user.id, 'Введите марку, модель, год начала производства автомобиля через запятую, например (toyota, allex, 2001)', reply_markup=markups.input_btn)
             await Form.general.set()
         elif message.text == 'Выборка по цене':
             await bot.send_message(message.from_user.id, 'Выберите марку автомобиля, чтобы вывести максимальную цену запчасти!', reply_markup=markups.btn_marks_category)
             await Big.car_mark.set()
+        elif message.text == 'Расчет РСА':
+            await bot.send_message(message.from_user.id, 'Введите марку авто и номер детали через запятую, например (toyota, 52119-13340-A0). Расчет может занять до 1 минуты!')
+            await RCA.car_mark.set()
+
+'''----------------------------Обработчик машины состояния для Расчета по РСА----------------------------'''
+@dp.message_handler(state=RCA.car_mark)
+async def RCA_processing(message: types.Message, state: FSMContext):
+    async with state.proxy() as proxy:
+        if message.text != 'Главная':
+            proxy['car_mark'] = message.text
+            ret_message = recaptcha_treat.input_main(proxy)
+            await bot.send_message(message.from_user.id, ret_message)
+        else:
+            await state.finish()
 
 '''----------------------------Обработчик машины состояния для Выборка по цене----------------------------'''
 @dp.message_handler(state=Big.car_mark)

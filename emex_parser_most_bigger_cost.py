@@ -19,6 +19,7 @@ def sorted_max_price_all_items(data): #-----------------------------------------
                             if 'seat' not in k['name'].lower() or 'exaust' not in k['name'].lower():
                                 max_item = k['price']
                                 lst = k
+    # print(lst)
     return lst
 
 def read_all_files(car_mark): #-------------------------------------------------------------------------------------------------ПОЛУЧЕНИЕ ВСЕХ ДАННЫХ ИЗ ФАЙЛОВ (МОЖНО СОРТИРОВАТЬ ПО МАРКЕ)
@@ -39,6 +40,7 @@ def read_all_files(car_mark): #-------------------------------------------------
                             max_cost.append({
                                 'car_name': f'{i} {j}',
                                 'max_part': max_price,
+                                'file': k,
                             })
                     except:
                         continue
@@ -58,10 +60,12 @@ def read_all_files(car_mark): #-------------------------------------------------
                                 max_cost.append({
                                     'car_name': f'{i} {j}',
                                     'max_part': max_price,
+                                    'file': k,
                                 })
                         except:
                             continue
-                except:
+                except Exception as ex:
+                    print(f'emex_parser_most_bigger_cost\nОшибка в read_all_file\n{ex}')
                     continue
     return max_cost
 
@@ -78,17 +82,20 @@ def input_main(car_mark): #-----------------------------------------------------
                 check_max = lst_parts['price']
                 check_lst = lst_parts
                 check_mark = i['car_name']
-        except:
+                check_year = i['file'].split('.')[0]
+        except Exception as ex:
+            print(f'emex_parser_most_bigger_cost\nПроизошла ошибка в input_main\n{ex}')
             continue
     emex_mark = check_mark.split(' ')[0].strip()
     emex_price = []
     emex_price.extend(emex_parser.main(check_lst["number"], emex_mark))
     try:
-        return f'Название машины: {check_mark}\nНаименование детали: {check_lst["name"]}\nСсылка: {check_lst["link"]}\nНомер детали: {check_lst["number"]}\nМаксимальная цена по AMAYAMA: {check_lst["price"]} RUB\nМаксимальная цена по EMEX: {max(emex_price)} RUB\n\n{recaptcha.find_past(check_lst["number"], car_mark)}'
+        return f'Название машины: {check_mark.upper()}\nСпецификация авто: {check_year.upper()}\nНаименование детали: {check_lst["name"].upper()}\nСсылка: {check_lst["link"]}\nНомер детали: {check_lst["number"]}\nМаксимальная цена по AMAYAMA: {check_lst["price"]} RUB\n\nМаксимальная цена по EMEX: {max(emex_price)} RUB\n\n{recaptcha.find_past(check_lst["number"], car_mark)}'
     except:
-        return f'Название машины: {check_mark}\nНаименование детали: {check_lst["name"]}\nСсылка: {check_lst["link"]}\nНомер детали: {check_lst["number"]}\nМаксимальная цена по AMAYAMA: {check_lst["price"]} RUB\nМаксимальная цена по EMEX не найдена!\n\n{recaptcha.find_past(check_lst["number"], car_mark)}'
+        return f'Название машины: {check_mark.upper()}\nСпецификация авто: {check_year.upper()}\nНаименование детали: {check_lst["name"].upper()}\nСсылка: {check_lst["link"]}\nНомер детали: {check_lst["number"]}\nМаксимальная цена по AMAYAMA: {check_lst["price"]} RUB\n\nМаксимальная цена по EMEX не найдена!\n\n{recaptcha.find_past(check_lst["number"], car_mark)}'
 
 
 # def input_tg(data):
 #     # print(data)
 #     print(input_main('Subaru'))
+# print(input_main({'car_mark':'максимум из всех'}))

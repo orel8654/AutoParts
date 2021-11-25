@@ -32,7 +32,8 @@ def recompile_file(folder, year):
                 break
             else:
                 continue
-        except:
+        except Exception as ex:
+            print(f'treat_send\nrecompile_file\n{ex}')
             spec = int(spec[-3])
             if str(spec) == str(year):
                 file = i
@@ -67,7 +68,8 @@ def input_main(data):
         one_file = sorted_data_in_file(car_mark, car_model, car_spec)
         mes_ret = call_in_sorted_with_class(car_mark, car_model, one_file, category)
         return mes_ret
-    except:
+    except Exception as ex:
+        print(f'treat_send\n')
         return 'Неправильно введены данные, либо данные о машине отсутвуют!'
 
 if __name__ == '__main__':
