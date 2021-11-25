@@ -4,6 +4,7 @@
 
 import json
 import emex_parser
+import recaptcha
 from config import LIST_HOOD, LIST_FRONT_FENDER, LIST_HEADLIGHTS, LIST_FRONT_BUMPER, LIST_REAR_BUMPER, LIST_REAR_HOOD, LIST_GLASSES_WINDSHIELD, LIST_GLASSES_DOORS, LIST_GLASSES_BACK, LIST_SRS_SECURITY, LIST_ENGINE, LIST_DOORS, CATEGORY_ENGINE, CATEGORY_BODY, CATEGORY_ELECTRIC, CATEGORY_TRANSMISSION
 
 class SortedParts:
@@ -274,9 +275,9 @@ def start_sorted_hood(data, mark):
     ama_price_dict, emex_price_list = class_hood.read_file_for_hood(data, mark)
     if ama_price_dict != '':
         try:
-            return f'Максимальная цена капота по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена капота по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}'
+            return f'Максимальная цена капота по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена капота по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
         except:
-            return f'Максимальная цена капота по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!'
+            return f'Максимальная цена капота по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по капоту не найдено!'
 
@@ -302,9 +303,9 @@ def start_sorted_front_fender(data, mark):
     ama_price_dict, emex_price_list = class_front_fender.read_file_for_front_fender(data, mark)
     if ama_price_dict != '':
         try:
-            return f'Максимальная цена крыла по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена крыла по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}'
+            return f'Максимальная цена крыла по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена крыла по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
         except:
-            return f'Максимальная цена капота по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!'
+            return f'Максимальная цена капота по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по капоту не найдено!'
 
@@ -314,9 +315,9 @@ def start_sorted_headlights(data, mark):
     ama_price_dict, emex_price_list = class_headlights.read_file_for_electric(data, mark)
     if ama_price_dict != '':
         try:
-            return f'Максимальная цена фары по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена фары по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}'
+            return f'Максимальная цена фары по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена фары по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
         except:
-            return f'Максимальная цена фары по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!'
+            return f'Максимальная цена фары по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по фарам не найдено!'
 
@@ -326,9 +327,9 @@ def start_sorted_front_bumper(data, mark):
     ama_price_dict, emex_price_list = class_front_bumper.read_file_for_front_bumper(data, mark)
     if ama_price_dict != '':
         try:
-            return f'Максимальная цена бампера (перед/зад) по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена бампера (перед/зад) по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}'
+            return f'Максимальная цена бампера (перед/зад) по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена бампера (перед/зад) по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
         except:
-            return f'Максимальная цена бампера (перед/зад) по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!'
+            return f'Максимальная цена бампера (перед/зад) по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по бамперам (перед/зад) не найдено!'
 
@@ -338,9 +339,9 @@ def start_sorted_rear_hood(data, mark):
     ama_price_dict, emex_price_list = class_rear_hood.read_file_for_rear_hood(data, mark)
     if ama_price_dict != '':
         try:
-            return f'Максимальная цена задней двери по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена задней двери по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}'
+            return f'Максимальная цена задней двери по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена задней двери по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
         except:
-            return f'Максимальная цена задней двери по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!'
+            return f'Максимальная цена задней двери по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по задней двери не найдено!'
 
@@ -350,9 +351,9 @@ def start_sorted_glasses_windshield(data, mark):
     ama_price_dict, emex_price_list = class_glasses.read_file_for_glasses_windshield(data, mark)
     if ama_price_dict != '':
         try:
-            return f'Максимальная цена лобового стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная лобового стекла по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}'
+            return f'Максимальная цена лобового стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная лобового стекла по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
         except:
-            return f'Максимальная цена лобового стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!'
+            return f'Максимальная цена лобового стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по лобовому стеклу не найдено!'
 
@@ -362,9 +363,9 @@ def start_sorted_glasses_doors(data, mark):
     ama_price_dict, emex_price_list = class_glasses.read_file_for_glasses_doors(data, mark)
     if ama_price_dict != '':
         try:
-            return f'Максимальная цена бокового стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена бокового стекла по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}'
+            return f'Максимальная цена бокового стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена бокового стекла по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
         except:
-            return f'Максимальная цена бокового стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!'
+            return f'Максимальная цена бокового стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по боковым стеклам не найдено!'
 
@@ -374,9 +375,9 @@ def start_sorted_glasses_back_window(data, mark):
     ama_price_dict, emex_price_list = class_glasses.read_file_for_glasses_back(data, mark)
     if ama_price_dict != '':
         try:
-            return f'Максимальная цена заднего стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена заднего стекла по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}'
+            return f'Максимальная цена заднего стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена заднего стекла по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
         except:
-            return f'Максимальная цена заднего стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!'
+            return f'Максимальная цена заднего стекла по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по задним стеклам не найдено!'
 
@@ -386,9 +387,9 @@ def start_sorted_engine(data, mark):
     ama_price_dict, emex_price_list = class_engine.read_file_for_engine(data, mark)
     if ama_price_dict != '':
         try:
-            return f'Максимальная цена двигателя по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена двигателя по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}'
+            return f'Максимальная цена двигателя по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена двигателя по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
         except:
-            return f'Максимальная цена двигателя по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!'
+            return f'Максимальная цена двигателя по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по двигателю не найдено!'
 
@@ -398,9 +399,9 @@ def start_sorted_doors(data, mark):
     ama_price_dict, emex_price_list = class_engine.read_file_for_doors(data, mark)
     if ama_price_dict != '':
         try:
-            return f'Максимальная цена боковой двери по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена боковой двери по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}'
+            return f'Максимальная цена боковой двери по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена боковой двери по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
         except:
-            return f'Максимальная цена боковой двери по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!'
+            return f'Максимальная цена боковой двери по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по боковым дверям не найдено!'
 
@@ -410,9 +411,9 @@ def start_sorted_srs(data, mark):
     ama_price_dict, emex_price_list = class_engine.read_file_for_srs(data, mark)
     if ama_price_dict != '':
         try:
-            return f'Максимальная цена SRS по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена SRS по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}'
+            return f'Максимальная цена SRS по AMAYAMA: {ama_price_dict["price"]} RUB\nМаксимальная цена SRS по EMEX: {max(emex_price_list)} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
         except:
-            return f'Максимальная цена SRS по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!'
+            return f'Максимальная цена SRS по AMAYAMA: {ama_price_dict["price"]} RUB\nСсылка на деталь: {ama_price_dict["link"]}\nНомер детали: {ama_price_dict["number"]}\nИнформации на EMEX не найдено!\n\n{recaptcha.find_past(ama_price_dict["number"], mark)}'
     else:
         return f'Информации по SRS не найдено!'
 
