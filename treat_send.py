@@ -7,6 +7,7 @@ import re
 from pathlib import Path, PurePosixPath
 import sorting_with_class
 
+
 #-----------------------------------------------------------------------------------------------------------------------HAVE OR NOT FILE IN DIRECTORY
 def valid_folder(car_mark, car_model):
     path = Path(f'models/{car_mark}/{car_model}')
@@ -18,6 +19,7 @@ def valid_folder(car_mark, car_model):
         else:
             files.append(i)
     return files
+
 
 #-----------------------------------------------------------------------------------------------------------------------RETURN ONE FILE
 def recompile_file(folder, year):
@@ -47,15 +49,18 @@ def recompile_file(folder, year):
     else:
         return None
 
+
 #-----------------------------------------------------------------------------------------------------------------------SORTED DATA IN FILE (don't delete!)
 def sorted_data_in_file(car_mark, car_model, car_spec):
     files = valid_folder(car_mark, car_model)  # Get PATH FOLDER
     one_file = recompile_file(files, car_spec)  # Get FILE NAME
     return one_file
 
+
 #-----------------------------------------------------------------------------------------------------------------------CALL IN SORTED_WITH_CLASS
 def call_in_sorted_with_class(car_mark, car_model, one_file, check_sort_category):
     return sorting_with_class.start_main(car_mark, car_model, one_file, check_sort_category)
+
 
 #-----------------------------------------------------------------------------------------------------------------------INPUT DATA
 def input_main(data):
@@ -72,9 +77,8 @@ def input_main(data):
         print(f'treat_send\ninput_main\n{ex}')
         return 'Неправильно введены данные, либо данные о машине отсутвуют!'
 
-if __name__ == '__main__':
-    lst = {'general': 'toyota, allex, 2001', 'category':'Список позиций'}
-    # print(input_main(lst))
+# if __name__ == '__main__':
+#     lst = {'general': 'toyota, allex, 2001', 'category':'Список позиций'}
 
 #-----------------------------------------------------------------------------------------------------------------------NOTES
 '''
