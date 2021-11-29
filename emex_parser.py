@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 from config import *
+import asyncio
 
 def get_html(url):
     s = requests.Session()

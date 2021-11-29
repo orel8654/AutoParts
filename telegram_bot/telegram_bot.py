@@ -33,7 +33,20 @@ class RCA(StatesGroup):
     car_mark = State()
     part_number = State()
 
-
+class Executor:
+    """In most cases, you can just use the 'execute' instance as a
+    function, i.e. y = await execute(f, a, b, k=c) => run f(a, b, k=c) in
+    the executor, assign result to y. The defaults can be changed, though,
+    with your own instantiation of Executor, i.e. execute =
+    Executor(nthreads=4)"""
+    def __init__(self, loop=loop, nthreads=1):
+        from concurrent.futures import ThreadPoolExecutor
+        self._ex = ThreadPoolExecutor(nthreads)
+        self._loop = loop
+    def __call__(self, f, *args, **kw):
+        from functools import partial
+        return self._loop.run_in_executor(self._ex, partial(f, *args, **kw))
+execute = Executor()
 
 '''----------------------------Рабочая информация----------------------------'''
 async def on_startup(_):
@@ -113,15 +126,15 @@ async def echo_send(message: types.Message):
             await RCA.car_mark.set()
 
 
-from threading import *
-import multiprocessing
+
+
 '''----------------------------Обработчик машины состояния для Расчета по РСА----------------------------'''
 @dp.message_handler(state=RCA.car_mark)
 async def RCA_processing(message: types.Message, state: FSMContext):
     async with state.proxy() as proxy:
         if message.text != 'Главная':
             proxy['car_mark'] = message.text
-            ret_message = recaptcha_treat.input_main(proxy)
+            ret_message = await recaptcha_treat.input_main(proxy)
             await bot.send_message(message.from_user.id, ret_message)
         else:
             await state.finish()

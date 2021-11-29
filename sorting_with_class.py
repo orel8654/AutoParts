@@ -5,7 +5,7 @@
 import json
 import re
 import emex_parser
-
+import asyncio
 
 class SortedParts:
 
@@ -309,10 +309,10 @@ def start_main(mark_m, model_m, year_m, sort_category):
         return start_sorted_srs(data_file, car_mark)
 
 #
-if __name__ == '__main__':
-    check = start_main('toyota', 'allex', '1-hatchback-right-e120-2001-3071.json', 'Капот')
-    print(check[0])
-    print(check[-1])
+# if __name__ == '__main__':
+#     check = start_main('toyota', 'allex', '1-hatchback-right-e120-2001-3071.json', 'Капот')
+#     print(check[0])
+#     print(check[-1])
 '''
 Передается из файла treat_send маркаа машины, модель машины, год машины(название файла) и список запчастей по которым нужно предоставить данные по ценам, если передается не спиок а строка и равна 'all', то производтся подсчет по все категориям запчастей.
 Отсюда же должен вызываться метод отправки в телеграм клиенту. 
