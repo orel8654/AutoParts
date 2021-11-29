@@ -1,10 +1,9 @@
-import time
-import requests
-from config import RUCAPTCHA_API_TOKEN
-from selenium import webdriver
-
 
 def get_response(iframe):
+    from config import RUCAPTCHA_API_TOKEN
+    import requests
+    import time
+
     r = requests.get(f'http://rucaptcha.com/in.php?key={RUCAPTCHA_API_TOKEN}&method=userrecaptcha&googlekey={iframe}&pageurl=https://prices.autoins.ru/priceAutoParts')
     id_res = r.text.split('|')[-1]
     cnt = 0
@@ -23,14 +22,15 @@ def get_response(iframe):
                 continue
             else:
                 res = res.text.split('|')[-1]
-                # print(res)
+                print(res)
                 return res
         else:
             return 'CAPCHA_NOT_READY'
 
 
 def find_past(part_number, car_mark):
-
+    import time
+    from selenium import webdriver
 
     options = webdriver.ChromeOptions()
     options.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Safari/605.1.15')
@@ -43,85 +43,84 @@ def find_past(part_number, car_mark):
     )
     try:
 
-
         #---------------------------------------------------------------------------------------------------------------ENTER TO SITE
         driver.get('https://prices.autoins.ru/priceAutoParts')
         time.sleep(2)
 
 
         #---------------------------------------------------------------------------------------------------------------INPUT DATE
-        class_date = driver.find_element_by_xpath('//*[@id="versionDate"]').click()
+        driver.find_element_by_xpath('//*[@id="versionDate"]').click()
         time.sleep(1)
         driver.find_element_by_xpath("/html/body/div[3]/div[1]/div[2]/table/tbody/tr[4]/td[5]").click()
 
 
         #---------------------------------------------------------------------------------------------------------------INPUT REGION
-        class_region = driver.find_element_by_xpath('//*[@id="newRequest"]/div[3]/div/div[2]/b').click()
+        driver.find_element_by_xpath('//*[@id="newRequest"]/div[3]/div/div[2]/b').click()
         driver.find_element_by_xpath('//*[@id="newRequest"]/div[3]/div/div[3]/div/ul/li[10]').click()
-        time.sleep(1)
+        # time.sleep(1)
 
 
         #---------------------------------------------------------------------------------------------------------------INPUT CAR MARK
         driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[2]/b').click()
         if car_mark.lower() == 'subaru':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[53]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[53]').click()
             time.sleep(1)
         elif car_mark.lower() == 'nissan':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[42]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[42]').click()
             time.sleep(1)
         elif car_mark.lower() == 'toyota':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[55]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[55]').click()
             time.sleep(1)
         elif car_mark.lower() == 'honda':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[23]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[23]').click()
             time.sleep(1)
         elif car_mark.lower() == 'mazda':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[36]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[36]').click()
             time.sleep(1)
         elif car_mark.lower() == 'mitsubishi':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[41]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[41]').click()
             time.sleep(1)
         elif car_mark.lower() == 'suzuki':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[54]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[54]').click()
             time.sleep(1)
         elif car_mark.lower() == 'acura':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[2]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[2]').click()
             time.sleep(1)
         elif car_mark.lower() == 'audi':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[3]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[3]').click()
             time.sleep(1)
         elif car_mark.lower() == 'bmw':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[4]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[4]').click()
             time.sleep(1)
         elif car_mark.lower() == 'cadillac':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[6]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[6]').click()
             time.sleep(1)
         elif car_mark.lower() == 'chery':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[7]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[7]').click()
             time.sleep(1)
         elif car_mark.lower() == 'chevrolet':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[8]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[8]').click()
             time.sleep(1)
         elif car_mark.lower() == 'ford':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[18]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[18]').click()
             time.sleep(1)
         elif car_mark.lower() == 'hyundai':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[24]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[24]').click()
             time.sleep(1)
         elif car_mark.lower() == 'infiniti':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[25]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[25]').click()
             time.sleep(1)
         elif car_mark.lower() == 'kia':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[30]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[30]').click()
             time.sleep(1)
         elif car_mark.lower() == 'lexus':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[33]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[33]').click()
             time.sleep(1)
         elif car_mark.lower() == 'porsche':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[45]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[45]').click()
             time.sleep(1)
         elif car_mark.lower() == 'volkswagen':
-            class_mark = driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[57]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[57]').click()
             time.sleep(1)
 
 
@@ -137,7 +136,7 @@ def find_past(part_number, car_mark):
         element2 = driver.find_element_by_xpath('//*[@id="g-recaptcha-response"]')
         res = get_response(iframes)
         element2.send_keys(res)
-        time.sleep(1)
+        # time.sleep(1)
 
 
         #---------------------------------------------------------------------------------------------------------------INPUT REQUEST PAT NUMBER
