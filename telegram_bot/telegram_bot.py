@@ -5,13 +5,13 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
 import emex_parser_most_bigger_cost
 import treat_send
-from config import TELEGRAM_TOKEN_BOT_GENERAL, LIST_CAR_MARKS
+from config import TELEGRAM_TOKEN_BOT_GENERAL
 import asyncio
 import markups
 from aiogram.types.message import ContentTypes
 import db
 import recaptcha_treat
-
+import debug.write_function as write
 
 
 logging.basicConfig(level=logging.INFO)
@@ -46,7 +46,7 @@ class Executor:
     def __call__(self, f, *args, **kw):
         from functools import partial
         return self._loop.run_in_executor(self._ex, partial(f, *args, **kw))
-execute = Executor()
+# execute = Executor()
 
 '''----------------------------Рабочая информация----------------------------'''
 async def on_startup(_):
@@ -133,6 +133,7 @@ async def echo_send(message: types.Message):
 async def RCA_processing(message: types.Message, state: FSMContext):
     async with state.proxy() as proxy:
         if message.text != 'Главная':
+            await write.write_request_from_user(message.from_user.id, message.text, 'РСА')
             proxy['car_mark'] = message.text
             ret_message = await recaptcha_treat.input_main(proxy)
             await bot.send_message(message.from_user.id, ret_message)
@@ -147,8 +148,8 @@ async def processing_car(message: types.Message, state: FSMContext):
     async with state.proxy() as proxy:
         if message.text != 'Главная':
             proxy['car_mark'] = message.text
-            ret_message = emex_parser_most_bigger_cost.input_main(proxy)
-            await bot.send_message(message.from_user.id, ret_message)
+            # ret_message = emex_parser_most_bigger_cost.input_main(proxy)
+            await bot.send_message(message.from_user.id, 'ret_message: ЗАГЛУШКА')
         else:
             await state.finish()
 
@@ -159,6 +160,7 @@ async def processing_car(message: types.Message, state: FSMContext):
 async def processing_text(message: types.Message, state: FSMContext):
     async with state.proxy() as proxy:
         if message.text != 'Главная':
+            await write.write_request_from_user(message.from_user.id, message.text, 'КАТЕГОРИИ')
             proxy['general'] = message.text
             await Form.next()
             await bot.send_message(message.from_user.id, 'Теперь выберите категорию, чтобы сделать расчет!', reply_markup=markups.category_btn)

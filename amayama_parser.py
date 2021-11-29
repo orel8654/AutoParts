@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-
 import amayama_parser_additionally
 from config import *
 import time
@@ -162,6 +161,7 @@ if __name__ == '__main__':
 
 
 #---------------------------------------------------------------------------------------------START LIST MODEL1
+
     for i in LIST_MODEL1:
         try:
             html = get_html(i).text
@@ -182,6 +182,5 @@ if __name__ == '__main__':
 
 #---------------------------------------------------------------------------------------------NOTES
 '''
-Загрузка памяти
-Разобраться с табличными значениями
+
 '''

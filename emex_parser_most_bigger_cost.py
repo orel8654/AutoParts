@@ -1,6 +1,6 @@
 import json
 import emex_parser
-from config import LIST_HOOD, LIST_FRONT_FENDER, LIST_HEADLIGHTS, LIST_FRONT_BUMPER, LIST_REAR_BUMPER, LIST_REAR_HOOD, LIST_GLASSES_WINDSHIELD, LIST_GLASSES_DOORS, LIST_GLASSES_BACK, LIST_SRS_SECURITY, LIST_ENGINE, LIST_DOORS, CATEGORY_ENGINE, CATEGORY_BODY, CATEGORY_ELECTRIC, CATEGORY_TRANSMISSION
+# from config import LIST_HOOD, LIST_FRONT_FENDER, LIST_HEADLIGHTS, LIST_FRONT_BUMPER, LIST_REAR_BUMPER, LIST_REAR_HOOD, LIST_GLASSES_WINDSHIELD, LIST_GLASSES_DOORS, LIST_GLASSES_BACK, LIST_SRS_SECURITY, LIST_ENGINE, LIST_DOORS, CATEGORY_ENGINE, CATEGORY_BODY, CATEGORY_ELECTRIC, CATEGORY_TRANSMISSION
 import os
 from os import path
 import time
@@ -8,19 +8,20 @@ from heapq import nlargest
 import recaptcha
 
 def sorted_max_price_all_items(data): #---------------------------------------------------------------------------------СОРТИРОВКА МАКСИМАЛЬНОЙ ЦЕНЫ ЗАПЧАСТИ
-    max_item = 0
-    lst = ''
-    for i in data:
-        if i['title'] == CATEGORY_BODY:
-            for j in i['all_parts']:
-                for k in j['title']['attr']:
-                    if k['price'] > max_item:
-                        if k['name'] in LIST_HOOD or k['name'] in LIST_REAR_HOOD or k['name'] in LIST_DOORS or k['name'] in LIST_GLASSES_WINDSHIELD or k['name'] in LIST_HEADLIGHTS or k['name'] in LIST_FRONT_BUMPER or k['name'] in LIST_GLASSES_DOORS or k['name'] in LIST_GLASSES_BACK or k['name'] in LIST_SRS_SECURITY or k['name'] in LIST_FRONT_BUMPER:
-                            if 'seat' not in k['name'].lower() or 'exaust' not in k['name'].lower():
-                                max_item = k['price']
-                                lst = k
-    # print(lst)
-    return lst
+    # max_item = 0
+    # lst = ''
+    # for i in data:
+    #     if i['title'] == CATEGORY_BODY:
+    #         for j in i['all_parts']:
+    #             for k in j['title']['attr']:
+    #                 if k['price'] > max_item:
+    #                     if k['name'] in LIST_HOOD or k['name'] in LIST_REAR_HOOD or k['name'] in LIST_DOORS or k['name'] in LIST_GLASSES_WINDSHIELD or k['name'] in LIST_HEADLIGHTS or k['name'] in LIST_FRONT_BUMPER or k['name'] in LIST_GLASSES_DOORS or k['name'] in LIST_GLASSES_BACK or k['name'] in LIST_SRS_SECURITY or k['name'] in LIST_FRONT_BUMPER:
+    #                         if 'seat' not in k['name'].lower() or 'exaust' not in k['name'].lower():
+    #                             max_item = k['price']
+    #                             lst = k
+    # # print(lst)
+    # return lst
+    pass
 
 def read_all_files(car_mark): #-------------------------------------------------------------------------------------------------ПОЛУЧЕНИЕ ВСЕХ ДАННЫХ ИЗ ФАЙЛОВ (МОЖНО СОРТИРОВАТЬ ПО МАРКЕ)
     max_cost = []
