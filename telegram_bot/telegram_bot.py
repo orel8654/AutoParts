@@ -4,7 +4,9 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
 import emex_parser_most_bigger_cost
+import report_file_rsa_by_multiproc
 import treat_send
+import write_pdf
 from config import TELEGRAM_TOKEN_BOT_GENERAL, QIWI_SECRET_KEY
 import asyncio
 import markups
@@ -14,12 +16,16 @@ import recaptcha_treat
 import debug.write_function as write
 from pyqiwip2p import QiwiP2P
 import random
+from concurrent.futures.thread import ThreadPoolExecutor
+
 
 logging.basicConfig(level=logging.INFO)
 loop = asyncio.get_event_loop()
 bot = Bot(token=TELEGRAM_TOKEN_BOT_GENERAL)
 dp = Dispatcher(bot, storage=MemoryStorage())
 p2p = QiwiP2P(auth_key=QIWI_SECRET_KEY, default_amount=345)
+sem = asyncio.Semaphore(25)
+# executor = ThreadPoolExecutor(5)
 
 '''----------------------------Машина состояния----------------------------'''
 class Form(StatesGroup):
@@ -184,13 +190,15 @@ async def echo_send(message: types.Message):
                 await bot.send_message(message.from_user.id, 'Вы новый пользователь, оформите подписку!', reply_markup=markups.subs_btn)
 
 
-
+"""
+ТРЕБУЕТСЯ НАСТРОЙКА АСИНХРОННОГО ИСПОЛНЕНИЯ
+"""
 '''----------------------------Обработчик машины состояния для Сделать отчет----------------------------'''
 @dp.message_handler(state=Report.vin)
 async def RSA_report(message: types.Message, state: FSMContext):
     import report_file_rsa
     import report_file_rsa_with_parse
-
+    import threading
 
     if db.check_days_subs(message.from_user.id) == True:
         async with state.proxy() as proxy:
@@ -202,20 +210,30 @@ async def RSA_report(message: types.Message, state: FSMContext):
                 except:
                     car_mark = ''
                 if car_mark != '':
-                    new_bill_report = p2p.bill(bill_id=message.from_user.id + random.randint(1000, 9999), amount=20, lifetime=2, comment='APTreport')
-                    await bot.send_message(message.from_user.id, f'Мы собрали информацию по автомобилю:\n\n{car_mark.upper()}\n\n№{message.text.upper()}\n\nКоличество запчастей: {len(data)}\n\nКупить отчет по ссылке: {new_bill_report.pay_url}\nСылка активна 2 минуты! После проверки оплаты мы пришлем вам отчет!', reply_markup=markups.back_back_btn2)
-                    await asyncio.sleep(120)
-                    check = await check_pay(new_bill_report)
+                    check = 'PAY' #
+                    # new_bill_report = p2p.bill(bill_id=message.from_user.id + random.randint(1000, 9999), amount=20, lifetime=2, comment='APTreport')
+                    # await bot.send_message(message.from_user.id, f'Мы собрали информацию по автомобилю:\n\n{car_mark.upper()}\n\n№{message.text.upper()}\n\nКоличество запчастей: {len(data)}\n\nКупить отчет по ссылке: {new_bill_report.pay_url}\nСылка активна 2 минуты! После проверки оплаты мы пришлем вам отчет!', reply_markup=markups.back_back_btn2)
+                    # await asyncio.sleep(120)
+                    # check = await check_pay(new_bill_report)
                     if check != 'WAITING':
                         await bot.send_message(message.from_user.id, 'Оплата прошла успешно! Ожидайте!', reply_markup=markups.back_back_btn2)
                         try:
-                            await message.answer_document(open(f'reports_rsa/{message.text.upper()}.txt', 'rb'))
+                            await message.answer_document(open(f'reports_rsa_pdf/{message.text.upper()}.pdf', 'rb'))
+                            await bot.send_message(message.from_user.id, 'Пожалуйста, проверьте те позиции, у которых не найдена цена!\nВозможно бот не смог собрать данные!')
                         except Exception:
-                            await report_file_rsa.callback_pars(data, car_mark, message.text)
-                            await message.answer_document(open(f'reports_rsa/{message.text.upper()}.txt', 'rb'))
+                            '''
+                            НОВЫЙ МЕТОД МУЛЬТИПРОЦЕССОРА
+                            '''
+                            await report_file_rsa_by_multiproc.create_process(data, message.text, car_mark)
+                            try:
+                                await write_pdf.write(message.text)
+                                await message.answer_document(open(f'reports_rsa_pdf/{message.text.upper()}.pdf', 'rb'))
+                            except:
+                                await message.answer_document(open(f'reports_rsa/{message.text.upper()}.txt', 'rb'))
+                            await bot.send_message(message.from_user.id, 'Пожалуйста, проверьте те позиции, у которых не найдена цена!\nВозможно бот не смог собрать данные!')
                     else:
                         await bot.send_message(message.from_user.id, f'Счет оплаты {message.text.upper()} истек! Повторите попытку!', reply_markup=markups.back_back_btn2)
-                        p2p.reject(bill_id=new_bill_report.bill_id)
+                        # p2p.reject(bill_id=new_bill_report.bill_id)
                 else:
                     '''
                     Здесь добавить парсинг не найденных файлов автомобилей таких как Nissan-europe, Nissan-japan, Toyota-europe, Toyota-japan
@@ -229,6 +247,11 @@ async def RSA_report(message: types.Message, state: FSMContext):
         await state.finish()
 
 
+
+"""
+РАБОЧИЙ МЕТОД!
+НЕ ИЗМЕНЯТЬ!
+"""
 
 '''----------------------------Обработчик машины состояния для Расчета по РСА----------------------------'''
 @dp.message_handler(state=RCA.car_mark)
@@ -244,7 +267,8 @@ async def RCA_processing(message: types.Message, state: FSMContext):
             await bot.send_message(message.from_user.id, 'Подтвердите!', reply_markup=markups.back_back_btn2)
             await state.finish()
 
-
+"""
+ПОКА ЧТО НЕРАБОЧИЙ МЕТОД !!!!!
 '''----------------------------Обработчик машины состояния для Выборка по цене----------------------------'''
 @dp.message_handler(state=Big.car_mark)
 async def processing_car(message: types.Message, state: FSMContext):
@@ -255,9 +279,14 @@ async def processing_car(message: types.Message, state: FSMContext):
             await bot.send_message(message.from_user.id, 'ret_message: ЗАГЛУШКА')
         else:
             await state.finish()
+"""
 
 
 
+"""
+РАБОЧИЙ МЕТОД!
+ИЗМЕНИТЬ ПРОВЕРКУ ВВОДА АВТОМОБИЛЯ, НЕ ПРОВЕРЯЕТ НА НАЛИЧИЕ МАШИНЫ
+"""
 '''----------------------------Обработчик машины состояния для Выборка по модели----------------------------'''
 @dp.message_handler(state=Form.general)
 async def processing_text(message: types.Message, state: FSMContext):
@@ -265,9 +294,17 @@ async def processing_text(message: types.Message, state: FSMContext):
         async with state.proxy() as proxy:
             if message.text != 'Главная':
                 await write.write_request_from_user(message.from_user.id, message.text, 'КАТЕГОРИИ')
+                check_car = treat_send.input_main(message.text)
+                '''
+                НОВАЯ ПРОВЕРКА! 
+                ПРОТЕСТИРОВАТЬ!
+                '''
+                # if check_car != 'Неправильно введены данные, либо данные о машине отсутвуют!':
                 proxy['general'] = message.text
                 await Form.next()
                 await bot.send_message(message.from_user.id, 'Теперь выберите категорию, чтобы сделать расчет!', reply_markup=markups.category_btn)
+                # else:
+                #     await bot.send_message(message.from_user.id, 'Неправильно введены данные, либо данные о машине отсутвуют!', reply_markup=markups.back_back_btn2)
             else:
                 await bot.send_message(message.from_user.id, 'Подтвердите!', reply_markup=markups.back_back_btn2)
                 await state.finish()

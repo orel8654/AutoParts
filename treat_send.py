@@ -64,6 +64,7 @@ def call_in_sorted_with_class(car_mark, car_model, one_file, check_sort_category
 
 #-----------------------------------------------------------------------------------------------------------------------INPUT DATA
 def input_main(data):
+    print(data)
     model = data['general'].split(',')
     car_mark = model[0].strip().lower().replace(' ', '-')
     car_model = model[1].strip().lower().replace(' ', '-')

@@ -1,17 +1,23 @@
 import asyncio
+import random
+import threading
+import time
+
 
 async def get_response(iframe):
     from config import RUCAPTCHA_API_TOKEN
     import requests
 
+    await asyncio.sleep(0.1)
     r = requests.get(f'http://rucaptcha.com/in.php?key={RUCAPTCHA_API_TOKEN}&method=userrecaptcha&googlekey={iframe}&pageurl=https://prices.autoins.ru/priceAutoParts')
+    await asyncio.sleep(0.1)
     id_res = r.text.split('|')[-1]
     cnt = 0
     delay = 30
+    await asyncio.sleep(delay)
     while True:
-        await asyncio.sleep(delay)
         res = requests.get(f'http://rucaptcha.com/res.php?key={RUCAPTCHA_API_TOKEN}&action=get&id={id_res}')
-        if cnt !=9:
+        if cnt !=16:
             if res.text == 'CAPCHA_NOT_READY':
                 await asyncio.sleep(5)
                 res = requests.get(f'http://rucaptcha.com/res.php?key={RUCAPTCHA_API_TOKEN}&action=get&id={id_res}')
@@ -29,55 +35,53 @@ async def get_response(iframe):
 
 
 async def find_past(part_number, car_mark):
-
     from seleniumwire import webdriver
     from selenium.webdriver.chrome.options import Options
-    from config import proxy_login, proxy_password, proxy_ip
-
+    from config import PROXY_LIST
 
     options_proxy = {
         'proxy': {
-            'https': f'https://{proxy_login}:{proxy_password}@{proxy_ip}',
+            'https': random.choice(PROXY_LIST),
         }
     }
     options = Options()
-    options.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Safari/605.1.15')
+    options.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36')
     options.add_argument('--disable-notifications')
     options.add_argument("--mute-audio")
     options.add_argument('--headless')
+    options.add_argument("--disable-extensions")
+    # options.add_argument('--disable-gpu')
+    # options.add_argument('--no-sandbox')
     driver = webdriver.Chrome(
         executable_path='/Users/egororlov/Desktop/autoparts/webdriver/chromedriver',
         options=options,
         seleniumwire_options=options_proxy,
     )
     try:
-
+        await asyncio.sleep(0.1)
         #---------------------------------------------------------------------------------------------------------------ENTER TO SITE
         driver.get('https://prices.autoins.ru/priceAutoParts')
         await asyncio.sleep(2)
 
-
         #---------------------------------------------------------------------------------------------------------------INPUT DATE
-        driver.find_element_by_xpath('//*[@id="versionDate"]').click()
+        driver.find_element_by_xpath('//*[@id="versionDate"]').click() #
         await asyncio.sleep(1)
-        driver.find_element_by_xpath("/html/body/div[3]/div[1]/div[2]/table/tbody/tr[4]/td[5]").click()
-
+        driver.find_element_by_xpath("/html/body/div[3]/div[1]/div[2]/table/tbody/tr[3]/td[4]").click() #
 
         #---------------------------------------------------------------------------------------------------------------INPUT REGION
-        driver.find_element_by_xpath('//*[@id="newRequest"]/div[3]/div/div[2]/b').click()
-        driver.find_element_by_xpath('//*[@id="newRequest"]/div[3]/div/div[3]/div/ul/li[10]').click()
-
+        driver.find_element_by_xpath('//*[@id="newRequest"]/div[3]/div/div[2]/b').click() #
+        driver.find_element_by_xpath('//*[@id="newRequest"]/div[3]/div/div[3]/div/ul/li[10]').click() #
 
         #---------------------------------------------------------------------------------------------------------------INPUT CAR MARK
-        driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[2]/b').click()
+        driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[2]/b').click() #
         if car_mark.lower() == 'subaru':
-            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[53]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[53]').click() #
             await asyncio.sleep(1)
         elif car_mark.lower() == 'nissan':
             driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[42]').click()
             await asyncio.sleep(1)
         elif car_mark.lower() == 'toyota':
-            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[55]').click()
+            driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[55]').click() #
             await asyncio.sleep(1)
         elif car_mark.lower() == 'honda':
             driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[23]').click()
@@ -131,54 +135,44 @@ async def find_past(part_number, car_mark):
             driver.find_element_by_xpath('//*[@id="newRequest"]/div[4]/div/div[3]/div/ul/li[57]').click()
             await asyncio.sleep(1)
 
-
         #---------------------------------------------------------------------------------------------------------------INPUT PART NUMBER
-        class_part = driver.find_element_by_xpath('//*[@id="article1"]')
-        class_part.send_keys(part_number)
-
+        class_part = driver.find_element_by_xpath('//*[@id="article1"]') #
+        class_part.send_keys(part_number) #
 
         #---------------------------------------------------------------------------------------------------------------TEXT AREA AND INPUT RECAPTCHA
-        iframes = driver.find_element_by_class_name('g-recaptcha').get_attribute('data-sitekey')
-        element = driver.find_element_by_css_selector('#g-recaptcha-response[style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"]')
+        iframes = driver.find_element_by_class_name('g-recaptcha').get_attribute('data-sitekey') #
+        element = driver.find_element_by_css_selector('#g-recaptcha-response[style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"]') #
         driver.execute_script('arguments[0].setAttribute("style","width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 100px 25px; padding: 0px; resize: none;")', element)
-        element2 = driver.find_element_by_xpath('//*[@id="g-recaptcha-response"]')
+        element2 = driver.find_element_by_xpath('//*[@id="g-recaptcha-response"]') #
+        await asyncio.sleep(0.3)
         res = await get_response(iframes)
-        element2.send_keys(res)
-
+        await asyncio.sleep(0.3)
+        element2.send_keys(res) #
 
         #---------------------------------------------------------------------------------------------------------------INPUT REQUEST PAT NUMBER
-        driver.find_element_by_css_selector('body > div.page-wrapper > section > div > div:nth-child(8) > input:nth-child(3)').click()
-        await asyncio.sleep(1)
-
+        driver.find_element_by_css_selector('body > div.page-wrapper > section > div > div:nth-child(8) > input:nth-child(3)').click() #
+        await asyncio.sleep(2)
 
         #---------------------------------------------------------------------------------------------------------------SCRAPE DATA
+        number = part_number
         try:
-            number = driver.find_element_by_xpath('//*[@id="resultTableOfOnlyOriginSpares"]/tbody/tr[2]/td[1]').text
+            '''
+            DON'T TOUCH 
+        
+            //*[@id="resultTableOfOnlyOriginSpares"]/tbody/tr[2]/td[3]
+            
+            '''
+            price = driver.find_element_by_xpath('//*[@id="resultTableOfOnlyOriginSpares"]/tbody/tr[2]/td[3]').text #
         except:
-            number = part_number
-        try:
-            part_name = driver.find_element_by_xpath('//*[@id="resultTableOfOnlyOriginSpares"]/tbody/tr[2]/td[2]').text
-            if part_name == '':
-                part_name = 'Не указано'
-        except:
-            part_name = 'Не указано'
-        try:
-            price = driver.find_element_by_xpath('//*[@id="resultTableOfOnlyOriginSpares"]/tbody/tr[2]/td[3]').text
             try:
-                price = int(price)
+                price = driver.find_element_by_xpath('//*[@id="resultTableOfOnlyOriginSpares"]/tbody/tr[4]/td[3]').text #
             except:
-                price = price
-        except:
-            price = 'Цена не указана'
+                price = 'Цена не найдена'
+
         driver.quit()
+        return f'Номер детали = {number.upper()}\nЦена по РСА = {price}'
 
-
-        return f'Номер детали: {number}\nЦена по РСА: {price}\nНаименование запчасти: {part_name}'
     except Exception as ex:
         print(f'recaptcha\ngeneral_loop\n{ex}')
         driver.quit()
         return f'Что-то пошло не так, пожалуйста повторите попытку позже, либо измените параметры!'
-
-# if __name__ == '__main__':
-#     loop = asyncio.get_event_loop()
-#     loop.run_until_complete(find_past('21460-VG100', 'nissan'))

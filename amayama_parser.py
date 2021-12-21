@@ -8,7 +8,8 @@ import os.path
 from os import path
 from telegram_send import send_message
 
-#---------------------------------------------------------------------------------------------BASE HTML(don't delete!!!)
+
+'''---------------Получение HTML страницы---------------'''
 def get_html(url):
     s = requests.Session()
     r = s.get(url, headers=HEADERS)
@@ -77,7 +78,11 @@ def get_title(link):
             print(ex)
             continue
     return parts
-#---------------------------------------------------------------------------------------------SAVE JSON WORKED
+
+
+
+
+'''---------------СОХРАНЕНИЕ В ФАЙЛ---------------'''
 def save_json(data, file_name):
     mark_car = file_name.split('/')[-3]
     model_car = file_name.split('/')[-2]
@@ -90,6 +95,10 @@ def save_json(data, file_name):
         print(f'Save error! Folder {mark_car}/{model_car}/{spec_car}')
         send_message(f'При сохранении произошла ошибка -- {ex}')
 
+
+
+
+'''---------------Проверка записи файла в базе---------------'''
 def valid_writer(link):
     if RULES_WRITER == False:
         mark_car = link.split('/')[-3].strip()
@@ -100,6 +109,7 @@ def valid_writer(link):
     else:
         return False
 
+'''---------------Проверка записи файла в базе---------------'''
 def check(all_link):
     rules = valid_writer(all_link)
     if rules == False:
@@ -117,7 +127,6 @@ def check(all_link):
                     'all_parts' : get_title('https://www.amayama.com' + href),
                     'link' : 'https://www.amayama.com' + href,
                 })
-                # print(all_parts)
             save_json(all_parts, all_link)
         except Exception as ex:
             print(ex)
@@ -125,50 +134,54 @@ def check(all_link):
     else:
         send_message(f'Ссылка {all_link} уже записана в json!')
 
-if __name__ == '__main__':
 
-    def get_list_models_links(link):
-        html = get_html(link).text
-        soup = BeautifulSoup(html, 'lxml')
+
+
+def get_list_models_links(link):
+    html = get_html(link).text
+    soup = BeautifulSoup(html, 'lxml')
+    try:
+        items = soup.find('div', class_='list')
+        hrefs = items.find_all('a')
+        for href in hrefs:
+            check('https://www.amayama.com' + href.get('href'))
+            send_message(f'Ссылка {href.get("href")} парсинг закончен!')
+    except:
+        '''
+        Для табличных значений списка автомобилей например LEXUS и INFINITI
+        '''
         try:
-            items = soup.find('div', class_='list')
-            hrefs = items.find_all('a')
-            for href in hrefs:
-                check('https://www.amayama.com' + href.get('href'))
-                send_message(f'Ссылка {href.get("href")} парсинг закончен!')
-        except:
+            items = soup.find('table')
+            colom = items.find_all('tr')
             try:
-                items = soup.find('table')
-                colom = items.find_all('tr')
-                try:
-                    for i in colom:
-                        check('https://www.amayama.com' + i.find('td').find_next('a').get('href'))
-                        send_message(f'Ссылка {i} парсинг закончен!')
-                except:
-                    send_message(f'Ошибка с табличными данными!')
+                for i in colom:
+                    check('https://www.amayama.com' + i.find('td').find_next('a').get('href'))
+                    send_message(f'Ссылка {i} парсинг закончен!')
             except:
-                send_message(f'Ошибка в получении html!')
-
-    def get_list_group_items(html):
-        try:
-            soup = BeautifulSoup(html, 'lxml')
-            items = soup.find_all('a', class_='list-group-item')
-            for item in items:
-                get_list_models_links(item.get('href'))
-        except Exception as ex:
-            send_message(f'Произошла ошибка {ex} в получении спецификаций моделей!')
-            return
+                send_message(f'Ошибка с табличными данными!')
+        except:
+            send_message(f'Ошибка в получении html!')
 
 
-#---------------------------------------------------------------------------------------------START LIST MODEL1
+def get_list_group_items(html):
+    try:
+        soup = BeautifulSoup(html, 'lxml')
+        items = soup.find_all('a', class_='list-group-item')
+        for item in items:
+            get_list_models_links(item.get('href'))
+    except Exception as ex:
+        send_message(f'Произошла ошибка {ex} в получении спецификаций моделей!')
+        return
 
-    for i in LIST_MODEL1:
-        try:
-            html = get_html(i).text
-            get_list_group_items(html)
-        except Exception as ex:
-            send_message(f'Произошла ошибка {ex} в основном цикле!')
-            continue
+
+'''---------------ОСНОВНОЙ ЦИКЛ---------------'''
+for i in LIST_MODEL1:
+    try:
+        html = get_html(i).text
+        get_list_group_items(html)
+    except Exception as ex:
+        send_message(f'Произошла ошибка {ex} в основном цикле!')
+        continue
 
 # ---------------------------------------------------------------------------------------------START LIST MODEL2
 #     for i in LIST_MODEL2:
