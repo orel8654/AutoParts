@@ -7,6 +7,7 @@ import emex_parser_most_bigger_cost
 import report_file_rsa_by_multiproc
 import treat_send
 import write_pdf
+import z_sort_write
 from config import TELEGRAM_TOKEN_BOT_GENERAL, QIWI_SECRET_KEY
 import asyncio
 import markups
@@ -218,18 +219,17 @@ async def RSA_report(message: types.Message, state: FSMContext):
                     if check != 'WAITING':
                         await bot.send_message(message.from_user.id, 'Оплата прошла успешно! Ожидайте!', reply_markup=markups.back_back_btn2)
                         try:
-                            await message.answer_document(open(f'reports_rsa_pdf/{message.text.upper()}.pdf', 'rb'))
+                            await message.answer_document(open(f'reports_rsa/{message.text.upper()}.txt', 'rb'))
                             await bot.send_message(message.from_user.id, 'Пожалуйста, проверьте те позиции, у которых не найдена цена!\nВозможно бот не смог собрать данные!')
                         except Exception:
                             '''
                             НОВЫЙ МЕТОД МУЛЬТИПРОЦЕССОРА
                             '''
                             await report_file_rsa_by_multiproc.create_process(data, message.text, car_mark)
-                            try:
-                                await write_pdf.write(message.text)
-                                await message.answer_document(open(f'reports_rsa_pdf/{message.text.upper()}.pdf', 'rb'))
-                            except:
-                                await message.answer_document(open(f'reports_rsa/{message.text.upper()}.txt', 'rb'))
+                            await asyncio.sleep(0.1)
+                            await z_sort_write.re_write(message.text.upper())
+                            await asyncio.sleep(0.1)
+                            await message.answer_document(open(f'reports_rsa/{message.text.upper()}.txt', 'rb'))
                             await bot.send_message(message.from_user.id, 'Пожалуйста, проверьте те позиции, у которых не найдена цена!\nВозможно бот не смог собрать данные!')
                     else:
                         await bot.send_message(message.from_user.id, f'Счет оплаты {message.text.upper()} истек! Повторите попытку!', reply_markup=markups.back_back_btn2)
@@ -237,6 +237,7 @@ async def RSA_report(message: types.Message, state: FSMContext):
                 else:
                     '''
                     Здесь добавить парсинг не найденных файлов автомобилей таких как Nissan-europe, Nissan-japan, Toyota-europe, Toyota-japan
+                    (ПОКА НЕ ОСНОВНАЯ ЗАДАЧА)
                     '''
                     await bot.send_message(message.from_user.id, f'Информации по номеру\n{message.text.upper()}\nНе найдено!',reply_markup=markups.back_back_btn2)
             else:
